@@ -7,13 +7,13 @@
   
   <title>iOS —— 使用 Container View 实现左右侧栏 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1. 前言前段时间做 Android 开发时使用系统控件 DrawerLayout 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。首先，我们先看看使用 Android 系统控件实现的侧栏效果">
+  <meta name="description" content="[TOC] 1. 前言前段时间做 Android 开发时使用系统控件 DrawerLayout 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。首先，我们先看看使用 Android 系统控件实">
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS —— 使用 Container View 实现左右侧栏">
 <meta property="og:url" content="http://yoursite.com/2016/11/06/iOS — Slider with Container View/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="1. 前言前段时间做 Android 开发时使用系统控件 DrawerLayout 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。首先，我们先看看使用 Android 系统控件实现的侧栏效果">
+<meta property="og:description" content="[TOC] 1. 前言前段时间做 Android 开发时使用系统控件 DrawerLayout 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。首先，我们先看看使用 Android 系统控件实">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_effect.gif">
 <meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_ios_view_structure.jpeg">
@@ -24,10 +24,10 @@
 <meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_code_frame_run.jpeg?imageMogr2/thumbnail/!40p">
 <meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_main_view_controller.jpeg?imageMogr2/thumbnail/!40p">
 <meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_left_menu_view?imageMogr2/thumbnail/!50p">
-<meta property="og:updated_time" content="2018-04-17T03:27:52.954Z">
+<meta property="og:updated_time" content="2018-04-17T03:34:42.157Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS —— 使用 Container View 实现左右侧栏">
-<meta name="twitter:description" content="1. 前言前段时间做 Android 开发时使用系统控件 DrawerLayout 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。首先，我们先看看使用 Android 系统控件实现的侧栏效果">
+<meta name="twitter:description" content="[TOC] 1. 前言前段时间做 Android 开发时使用系统控件 DrawerLayout 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。首先，我们先看看使用 Android 系统控件实">
 <meta name="twitter:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_effect.gif">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -101,7 +101,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>前段时间做 Android 开发时使用系统控件 <code>DrawerLayout</code> 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。<br>首先，我们先看看使用 Android 系统控件实现的侧栏效果：</p>
+        <p>[TOC]</p>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>前段时间做 Android 开发时使用系统控件 <code>DrawerLayout</code> 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。<br>首先，我们先看看使用 Android 系统控件实现的侧栏效果：</p>
 <p><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_effect.gif" alt=""></p>
 <p>Figure 1.1 : <code>DrawerLayout</code> 实现效果</p>
 <a id="more"></a>
@@ -283,7 +284,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/06/iOS — Slider with Container View/" data-id="cjg33zbt90006rwtpxz4rzn5j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/06/iOS — Slider with Container View/" data-id="cjg348sro0006zhtpmeqwmixr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
