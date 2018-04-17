@@ -16,7 +16,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/%E6%90%AD%E5%BB%BABlog1.jpg?imageMogr2/thumbnail/!100p">
 <meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/%E6%90%AD%E5%BB%BABlog2.jpg?imageMogr2/thumbnail/!100p">
-<meta property="og:updated_time" content="2018-04-17T03:37:07.619Z">
+<meta property="og:updated_time" content="2018-04-17T03:43:07.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Blog搭建指南 —— 基于Github 和 Hexo">
 <meta name="twitter:description" content="前言还记得大学时期在新浪开了个博客，记录了很多大学时的生活点滴，但随着微博的出现，博客平台逐渐「过时」，信息碎片化的趋势愈演愈烈，自己也就逐渐放弃了博客的维护了。随着微博、朋友圈等平台的壮大，信息进入「快餐」时代，人们不再需要长篇大论，不再需要斟酌文字，信息的发送变得尤为简单，人们表达/表现自己的欲望得到了更快的满足，这一表象也恰恰验证了人「懒」的天性。">
@@ -96,39 +96,39 @@
         <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>还记得大学时期在新浪开了个博客，记录了很多大学时的生活点滴，但随着微博的出现，博客平台逐渐「过时」，信息碎片化的趋势愈演愈烈，自己也就逐渐放弃了博客的维护了。随着微博、朋友圈等平台的壮大，信息进入「快餐」时代，人们不再需要长篇大论，不再需要斟酌文字，信息的发送变得尤为简单，人们表达/表现自己的欲望得到了更快的满足，这一表象也恰恰验证了人「懒」的天性。<br><a id="more"></a><br>虽说博客停止维护了，但闲来无事也喜欢在「印象笔记」上写写文章，记录一下心情，评论一下电影，分析一下技术，偶尔总结一下自己。写得多了，愈发觉得「印象笔记」糟糕的写作和排版体验实在影响心情，恰好这些天尝试了一下「Markdown」语法，瞬间被「能够把文章像代码一样管控起来」这种体验所俘获，谁让我是一名羞涩的「程序员」呢。同时，最近看了周楷雯Kevin的「Producter」（一本涵盖了设计、交互、视觉、开发、营销的作品），加之平时对设计一直感兴趣，很自然地就萌生了创建独立博客，自己设计实现博客风格，文章使用Markdown语法编写，用Git维护。Google了一下几个关键词，很快就出来了「Github pages」「Hexo」「Jekyll」「博客主题模板」等教程。在知乎上搜索了一下独立博客相关信息，在问题<a href="https://www.zhihu.com/question/24422335/answer/39304455" target="_blank" rel="noopener">有哪些好看的Hexo主题</a>里看到了<a href="https://www.zhihu.com/people/iissnan" target="_blank" rel="noopener">@正峰</a>设计的Hexo主题<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">Next</a>，简洁、清晰，效果很合心意，维护于<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">Github</a>，于是，初步决定使用「Github pages」+「Hexo」+「Next」搭建第一个属于自己的独立博客。</p>
 <h1 id="博客的搭建"><a href="#博客的搭建" class="headerlink" title="博客的搭建"></a>博客的搭建</h1><h2 id="Github-pages库创建"><a href="#Github-pages库创建" class="headerlink" title="Github pages库创建"></a>Github pages库创建</h2><p>这步不用多说，申请Github帐号「YourAccount」，创建repository [YourAccount.github.io]，这样就ok了，章节「Hexo安装与配置」完成后即可通过域名YourAccount.github.io访问自己的博客了。什么？嫌弃域名不简洁，难看，处女座表示完全接受不了？！没关系，「域名申请与配置」章节可以满足你三个愿望。</p>
 <h2 id="Hexo安装与配置"><a href="#Hexo安装与配置" class="headerlink" title="Hexo安装与配置"></a>Hexo安装与配置</h2><p>其实…这个步骤也没什么，总共命令才三条，由于我用的是OS X系统，Win和Linux的盆友们就自行查看<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">hexo官方文档</a>啦。下面是OS X系统下的安装命令：</p>
-<h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://raw.github.com/creationix/nvm/master/install.sh | sh</span><br><span class="line">$ nvm install 4</span><br></pre></td></tr></table></figure>
+<h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl https://raw.github.com/creationix/nvm/master/install.sh | sh</span><br><span class="line">$ nvm install 4</span><br></pre></td></tr></table></figure>
 <h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>直接<a href="https://sourceforge.net/projects/git-osx-installer/" target="_blank" rel="noopener">下载</a>Git安装包进行安装即可。</p>
-<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 <h3 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h3><p>安装完成后，新建用于存放Blog源文件的目录（此处假设为/YourBlog/），然后使用Terminal运行下述命令，即可完成文件夹的「Hexo化」，后续的所有操作均在此文件夹中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
 <p>除了初始化指令，常用的hexo指令集有下面这些，具体用法后面章节会提到。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br><span class="line">$ hexo new &quot;xxxx&quot;</span><br><span class="line">$ hexo clean</span><br><span class="line">$ ...</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br><span class="line">$ hexo new <span class="string">"xxxx"</span></span><br><span class="line">$ hexo clean</span><br><span class="line">$ ...</span><br></pre></td></tr></table></figure>
 <h2 id="NexT主题安装与配置"><a href="#NexT主题安装与配置" class="headerlink" title="NexT主题安装与配置"></a>NexT主题安装与配置</h2><p>进入YourBlog目录，找到themes文件夹，在Terminal中使用git下载NexT主题：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https://github.com/iissnan/hexo-theme-next.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next.git</span><br></pre></td></tr></table></figure>
 <p>将「hexo-theme-next」文件夹改名为「next」。</p>
 <p>打开YourBlog/_config.yml文件，找到「Themes」关键字，在下方加入下述代码，并注释掉其他的「theme xxx」代码，即可切换到NexT主题。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ #theme xxx</span><br><span class="line">$ theme next</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="comment">#theme xxx</span></span><br><span class="line">$ theme next</span><br></pre></td></tr></table></figure>
 <p>打开YourBlog/themes/next/_config.yml文件，找到「Schemes」关键字，里面有三套风格，可根据个人喜好选择其中一款，我选用的这款是Mist。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ #scheme: Muse</span><br><span class="line">$ scheme: Mist</span><br><span class="line">$ #scheme: Pisces</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="comment">#scheme: Muse</span></span><br><span class="line">$ scheme: Mist</span><br><span class="line">$ <span class="comment">#scheme: Pisces</span></span><br></pre></td></tr></table></figure>
 <h2 id="Markdown语法及编辑工具"><a href="#Markdown语法及编辑工具" class="headerlink" title="Markdown语法及编辑工具"></a>Markdown语法及编辑工具</h2><p>开头提到吸引我开博客很重要的一点是能用Markdown编辑和维护所有文章，就算后面需要做文章迁移，只要我保留了Markdown格式的源文件，无论我迁移到哪个网络平台，文章的格式和排版都能维持一致。Markdown的理念是「易读易写」，语法很容易上手，具体可参考<a href="http://www.markdown.cn/" target="_blank" rel="noopener">官网</a>说明。</p>
 <p>至于Markdown编辑器，我没有尝试太多，打算先用着Mou试试。鉴于现在Markdown编辑器之多（无论在线还是离线），不排除在熟悉Markdown语法后会多更换几个编辑器试试。Mou里面也有比较详细的Markdown语法例程，对熟悉Markdown语法还是挺有帮助的。</p>
 <p><img src="http://7xra14.com1.z0.glb.clouddn.com/%E6%90%AD%E5%BB%BABlog1.jpg?imageMogr2/thumbnail/!100p" alt=""></p>
 <h2 id="发表第一篇博文"><a href="#发表第一篇博文" class="headerlink" title="发表第一篇博文"></a>发表第一篇博文</h2><p>好了，准备工作基本完成，下面来尝试发布第一篇博文。</p>
 <p>1）新建博文.md文件。执行下述命令后，可以发现在YourBlog/Source/_posts/下有一个「myFirstBlog.md」文件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new &quot;myFirstBlog&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"myFirstBlog"</span></span><br></pre></td></tr></table></figure>
 <p>2）使用Markdown编辑器打开myFirstBlog，随便编写一些内容。</p>
 <p>3）执行下述指令，编译生成hexo静态网页</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
 <p>4）执行下述命令，在本机测试网站显示效果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s -s</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s -s</span><br></pre></td></tr></table></figure>
 <p>5）打开浏览器，访问「<a href="http://localhost:4000/」，即可看到博客的整体显示效果。" target="_blank" rel="noopener">http://localhost:4000/」，即可看到博客的整体显示效果。</a></p>
 <p>6）执行下述命令，把博客部署到githup服务器上，再访问「YourAcount.github.io」，即可看到最终部署到服务器上的博客效果了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
 <h2 id="域名申请与配置"><a href="#域名申请与配置" class="headerlink" title="域名申请与配置"></a>域名申请与配置</h2><p>前面说道，如果不满意Github默认的域名，可以自己申请自定义域名与「YourAcount.github.io」绑定，即可通过自定义域名访问自己的博客了。</p>
 <p>1）申请域名</p>
 <p>虽然很多人都推荐使用godaddy申请域名，不过我图方便，直接在阿里云上申请了「chamchamben.com」的域名，首年45元。</p>
 <p>2）hexo配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-generator-cname --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-generator-cname --save</span><br></pre></td></tr></table></figure>
 <p>执行上述命令，安装hexo的「CNAME」生成器；然后打开YourBlog/_config.yml文件，找到url关键字，在其后面填入刚申请的域名，这里我填写了「<a href="http://chamchamben.com」。在下一次执行「hexo" target="_blank" rel="noopener">http://chamchamben.com」。在下一次执行「hexo</a> g」时，会自动在YourBlog/public/下创建CNAME文件，里面存放着自定义域名「chamchamben.com」。</p>
 <p>3）域名配置</p>
 <p>在域名的「解析设置」里，添加如图所示的三项内容，即可完成域名重定向。</p>
@@ -138,16 +138,16 @@
 <p>剩下还要做什么？当然就是写文章，优化主题配置，学习前端知识自行设计主题模板，推广博客等等了。</p>
 <h2 id="坑！！！"><a href="#坑！！！" class="headerlink" title="坑！！！"></a>坑！！！</h2><p>虽说上面的步骤看着简单，但真正操作起来，还是或多或少有些坑的。</p>
 <h3 id="NexT主题的bug"><a href="#NexT主题的bug" class="headerlink" title="NexT主题的bug"></a>NexT主题的bug</h3><p>在修改了已有.md博客文件后，执行「hexo g」指令时，其实并没有生成正确的index.html文件，导致博客「首页」会出现博文丢失的情况。此时只需要再执行一次「hexo g」指令，即可生成正确的index.html文件了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
 <h3 id="本地预览正常，但部署到Github后页面不对"><a href="#本地预览正常，但部署到Github后页面不对" class="headerlink" title="本地预览正常，但部署到Github后页面不对"></a>本地预览正常，但部署到Github后页面不对</h3><p>本地预览时，若直接使用「hexo s」命令，则预览的是实时编译出来的网页，与使用「hexo d」部署到服务器时的网页不一定一致，特别是遇到问题1）时，「hexo s」命令执行的预览是看不出来问题的。所以，在本地进行预览时，需要使用「hexo s -s」命令，确保编译生成的网页文件与即将部署到服务器的网页文件一致，保证在部署前博客没有问题。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br><span class="line">$ hexo s -s</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br><span class="line">$ hexo s -s</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
 <h3 id="CNAME文件的生成"><a href="#CNAME文件的生成" class="headerlink" title="CNAME文件的生成"></a>CNAME文件的生成</h3><p>在「域名申请与配置」章节中提到CNAME文件，其作用是用于告知Github服务器即将把哪个域名绑定到YourAcount.github.io网址上。所以，CNAME中填写域名与你申请的自定义域名必须一致，否则就不能通过自定义域名访问博客了。</p>
 <p>为什么说这里有坑呢，在网络上搜索到的各种教程中，都说CNAME是直接在Github仓库中创建，然后手动填入自定义域名的。当然，手动创建CNAME文件并写入域名可以让你的域名跳转成功，但是，当你下一次执行「hexo g」和「hexo d」进行网页编译部署时，你会发现Github库中的CNAME文件被修改为「YourAcount.github.io」，此时通过浏览器访问自定义域名时，会发现博客已经访问不了了。</p>
 <p>所以，针对CNAME文件，还是通过「hexo-generator-cname」插件来自动生成吧。</p>
 <h3 id="博客搭建完后就只管写文章就行了？呵呵…"><a href="#博客搭建完后就只管写文章就行了？呵呵…" class="headerlink" title="博客搭建完后就只管写文章就行了？呵呵…"></a>博客搭建完后就只管写文章就行了？呵呵…</h3><p>人的欲望是无穷的，当博客搭建完后，你会开始想，这个主题再要是加点统计功能就好了，这个地方留白再多些就好了，这个动画速度再快些就好了…当你开始想折腾，想真正按照自己想法去设计博客交互及视觉时，你会发现，「前端技术」在不远处跟你热情招手呢~~</p>
 <h3 id="修复Mist主题对移动端的支持问题-「作者注：2016-3-25新增」"><a href="#修复Mist主题对移动端的支持问题-「作者注：2016-3-25新增」" class="headerlink" title="修复Mist主题对移动端的支持问题 「作者注：2016.3.25新增」"></a>修复Mist主题对移动端的支持问题 「作者注：2016.3.25新增」</h3><p>Next.Mist主题的简约固然好，但对移动端的支持有点差强人意。考虑到现在大家都使用手机看文章，本想着要换一个对移动端支持完善的主题，但搜索了一通却没有发现一个钟意的。无意中点开了Next主题的Github库，看到了<code>Issues</code>，「会不会有人在issue中提交过这个问题呢？说不定有解决方法！」。于是，被我找到了移动端的修改方法，<a href="https://github.com/iissnan/hexo-theme-next/issues/623" target="_blank" rel="noopener">Issue</a>的解决方法如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) source/css/_schemes/Mist/_header.styl .header-inner +mobile 添加 &quot;width: auto&quot;语句;</span><br><span class="line">2) source/css/_schemes/Mist/index.styl .footer-inner +mobile 添加 &quot;width: auto&quot;语句; </span><br><span class="line">3) source/css/_common/outline/outline.styl .main-inner 添加 &quot;+mobile() &#123; width: auto; &#125;&quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1) <span class="built_in">source</span>/css/_schemes/Mist/_header.styl .header-inner +mobile 添加 <span class="string">"width: auto"</span>语句;</span><br><span class="line">2) <span class="built_in">source</span>/css/_schemes/Mist/index.styl .footer-inner +mobile 添加 <span class="string">"width: auto"</span>语句; </span><br><span class="line">3) <span class="built_in">source</span>/css/_common/outline/outline.styl .main-inner 添加 <span class="string">"+mobile() &#123; width: auto; &#125;"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo g</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
 <p>手机打开博客，完美~~~</p>
 <h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>曾经看过一句话「立志用功如种树然，方其根芽，犹未有余，及其有干，尚未有枝，枝而后叶，叶而后花实。初种根时，只管栽培灌溉，勿作枝想，勿作叶想，勿作花想，勿作实想——悬想何益？但不忘栽培之功，怕没有枝叶花实？」</p>
 <p>某种意义说，博客之于我是一颗种子，是人生的一种积累方式。「初种根时，只管灌溉，勿作枝想，勿作叶想，勿作花想，勿作实想——悬想何益？但不忘栽培之功，怕没有枝叶花实？」是的，博文之于博客，相当于泥土，相当于水份，相当于肥料，只要养分充足，还担心不能枝繁叶茂么？</p>
@@ -156,7 +156,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/29/Blog_build_up/" data-id="cjg34emko000456tpxrc4xt7s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/29/Blog_build_up/" data-id="cjg34iqsm000acatpsuktk1xf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -208,7 +208,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Swift/" style="font-size: 15px;">Swift</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a>
+      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a>
     </div>
   </div>
 
@@ -238,15 +238,15 @@
           </li>
         
           <li>
-            <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/">iOS —— 使用 Container View 实现左右侧栏</a>
-          </li>
-        
-          <li>
             <a href="/2016/04/17/iOS-Architecture-Patterns/">iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」</a>
           </li>
         
           <li>
             <a href="/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/">Swift 2之协议式编程介绍「译」</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Xcode multiple target/">Xcode —— 使用Multi-Target管控相似App</a>
           </li>
         
       </ul>

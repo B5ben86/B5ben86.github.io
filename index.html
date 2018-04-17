@@ -105,7 +105,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/04/17/vue+koa2+mySQL+Ngnix框架搭建备忘/" data-id="cjg34emks000656tpsqhbchxj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/04/17/vue+koa2+mySQL+Ngnix框架搭建备忘/" data-id="cjg34iqsp000dcatpkakohe6r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li></ul>
@@ -154,88 +154,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/06/iOS — Slider with Container View/" data-id="cjg34emk9000056tptc85rtwr" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS — 使用 Container View 实现左右侧栏" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/" class="article-date">
-  <time datetime="2016-11-06T01:33:32.000Z" itemprop="datePublished">2016-11-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS开发/">iOS开发</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/">iOS —— 使用 Container View 实现左右侧栏</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>前段时间做 Android 开发时使用系统控件 <code>DrawerLayout</code> 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。<br>首先，我们先看看使用 Android 系统控件实现的侧栏效果：</p>
-<center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_effect.gif" width="40%" height="40%"><br><br>Figure 1.1 : <code>DrawerLayout</code> 实现效果<br></center>
-
-<p>从图1.1中可以看出，<code>DrawerLayout</code> 大致实现了下述几种交互：</p>
-<ul>
-<li>左侧栏未弹出的情况下：<ul>
-<li>点击左上角 Menu 按钮，左侧栏弹出，同时添加黑色半透明 View 对主界面进行遮盖</li>
-<li>手指从屏幕左方边缘向右滑动，左侧栏相应右移，黑色背景 View 的透明度随右移距离增加而变深；若右划距离不超过侧栏宽度一半，手指松开后侧栏收回；若右划距离超过侧栏一半，则侧栏弹出 。（ <em>此功能在模拟器上未能触发，需在真机上重现</em> ）</li>
-</ul>
-</li>
-<li>左侧栏已弹出的情况下：<ul>
-<li>选中左侧栏中的某个 Item ，左侧栏收回</li>
-<li>点击黑色半透明 View，左侧栏收回</li>
-<li>手指向左滑动，左侧栏相应进行左划，黑色背景 View 的透明度随左移距离增加而变浅；若左划距离不超过侧栏宽度一半，手指松开后侧栏回到原位置；若左划距离超过侧栏宽度一半，左侧栏收回</li>
-</ul>
-</li>
-</ul>
-<p>在下载尝试了几款 iOS 侧栏开源库后，发现基本上都不能满足 <code>DrawerLayout</code> 的相同交互，而且大部分都是使用纯代码实现，与公司 iOS 项目遵循的 storyboard 优先原则有所违背，最终决定造个轮子，让 iOS 及 Android app 的 UX/UI 尽可能一致。</p>
-<h2 id="1-1-开发环境"><a href="#1-1-开发环境" class="headerlink" title="1.1 开发环境"></a>1.1 开发环境</h2><ul>
-<li>macOS Sierra : 10.12.1 (16B2555)</li>
-<li>Xcode : 8.1 (8B62) </li>
-<li>Objective-C</li>
-<li>Android Studio : 2.2.2</li>
-</ul>
-<h2 id="1-2-工具"><a href="#1-2-工具" class="headerlink" title="1.2 工具"></a>1.2 工具</h2><ul>
-<li>Keynote</li>
-<li>GIPHY Capture</li>
-<li>MWeb</li>
-<li>IconJar</li>
-<li>Sketch</li>
-</ul>
-<h2 id="1-3-完整工程"><a href="#1-3-完整工程" class="headerlink" title="1.3 完整工程"></a>1.3 完整工程</h2><p>Talk is cheap, show me the code!<br><a href="https://github.com/B5ben86/DrawerLayoutDemo" target="_blank" rel="noopener">DrawerLayoutDemo</a></p>
-<h2 id="1-4-最终效果"><a href="#1-4-最终效果" class="headerlink" title="1.4 最终效果"></a>1.4 最终效果</h2><center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_ios_view_structure.jpeg" width="100%" height="100%"><br><br>Figure 1.2 : iOS 页面结构<br></center>
-
-<center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_ios_effect.gif" width="40%" height="40%"><br><br>Figure 1.3 : iOS <code>DrawerLayoutDemo</code> 实现效果<br></center>
-        
-          <p class="article-more-link">
-            <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/06/iOS — 使用 Container View 实现左右侧栏/" data-id="cjg34emkw000a56tpnk5ybwt4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/11/06/iOS — Slider with Container View/" data-id="cjg34iqso000bcatpkg28u669" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
@@ -291,7 +210,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/04/17/iOS-Architecture-Patterns/" data-id="cjg34emkz000b56tpy1x7k7j5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/04/17/iOS-Architecture-Patterns/" data-id="cjg34iqsr000fcatp8511sbev" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
@@ -349,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/" data-id="cjg34emkq000556tpkvw3pqgl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/" data-id="cjg34iqs10001catpkpzlywm5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
@@ -397,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/08/Xcode multiple target/" data-id="cjg34emki000156tp2cvj2uf1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/08/Xcode multiple target/" data-id="cjg34iqrw0000catpn2mhkkoy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
@@ -444,7 +363,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/02/29/Blog_build_up/" data-id="cjg34emko000456tpxrc4xt7s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/02/29/Blog_build_up/" data-id="cjg34iqsm000acatpsuktk1xf" class="article-share-link">Share</a>
       
       
     </footer>
@@ -484,7 +403,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Swift/" style="font-size: 15px;">Swift</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a>
+      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a>
     </div>
   </div>
 
@@ -514,15 +433,15 @@
           </li>
         
           <li>
-            <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/">iOS —— 使用 Container View 实现左右侧栏</a>
-          </li>
-        
-          <li>
             <a href="/2016/04/17/iOS-Architecture-Patterns/">iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」</a>
           </li>
         
           <li>
             <a href="/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/">Swift 2之协议式编程介绍「译」</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Xcode multiple target/">Xcode —— 使用Multi-Target管控相似App</a>
           </li>
         
       </ul>

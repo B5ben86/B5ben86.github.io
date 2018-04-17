@@ -17,7 +17,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://cdn4.raywenderlich.com/wp-content/uploads/2015/06/swift-new.jpg">
 <meta property="og:image" content="https://cdn5.raywenderlich.com/wp-content/uploads/2015/06/protocols-extend.png">
-<meta property="og:updated_time" content="2018-04-17T03:24:30.475Z">
+<meta property="og:updated_time" content="2018-04-17T03:43:35.507Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swift 2之协议式编程介绍「译」">
 <meta name="twitter:description" content="原文：Introducing Protocol-Oriented Programming in Swift 2 作者：Erik Kerber 译者：Chamchamben   Swift Bird brings speedy new features to Swift 2!  备注：此教程需要安装Xcode 7及Swift 2，此时两者均可能处于beta版本。您可以通过苹果开发者门户网站下载最新">
@@ -107,7 +107,7 @@
 <p>其中，最让人兴奋的要属<code>协议扩展（protocol extensions）</code>语法。在Swift 1中，开发者可以扩展原有的class, struct和enum类型。现在，开发者可以对protocol进行扩展了。</p>
 <p>刚看到protocol extensions时，大家可能认为这只是一个相对次要的功能，但实际上protocol extensions非常强大，强大到甚至可以改变开发者的编码方式！在这个教程中，你将会跟随我们一起探索如何使用protocol extensions语法，以及如何进行<code>「协议式编程」</code>。<br><a id="more"></a></p>
 <h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>在Xcode中，选择<code>File\New\Playground...</code>打开一个新的playground，并将playground命名为<code>SwiftProtocols</code>。由于本教程可以用在任意平台上，platform可以随意选择。点击<code>Next</code>，保存Playground。<br>创建成功后，输入下述代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">protocol Bird &#123;</span><br><span class="line">    var name: String &#123; get &#125;</span><br><span class="line">    var canFly: Bool &#123; get &#125;</span><br><span class="line">&#125;</span><br><span class="line">protocol Flyable &#123;</span><br><span class="line">    var airspeedVelocity: Double &#123; get &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Bird</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="keyword">var</span> canFly: <span class="type">Bool</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Flyable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> airspeedVelocity: <span class="type">Double</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里我们定义了一个简单的protocol <code>Bird</code>，包含属性<code>name</code>和<code>canFly</code>，同时定义了一个<code>Flyable</code>协议，包含属性<code>airSpeedVelocity</code>。</p>
 <p>在没有<code>protocol</code>的时候，大家一般会将<code>Flyable</code>定义为基类，然后通过继承的方式定义<code>Bird</code>及其他可以「飞」的类，例如飞机。在这里我们需要明确一点，<strong><em>所有的事情都由protocol开始！</em></strong></p>
 <p>当你开始定义类型时，你将会逐步发现「协议式编程」是如何使整个系统更加灵活健壮的。</p>
@@ -180,7 +180,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/" data-id="cjg34emkq000556tpkvw3pqgl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/" data-id="cjg34iqs10001catpkpzlywm5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
@@ -239,7 +239,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Swift/" style="font-size: 15px;">Swift</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a>
+      <a href="/tags/Node-js/" style="font-size: 10px;">Node.js</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a>
     </div>
   </div>
 
@@ -269,15 +269,15 @@
           </li>
         
           <li>
-            <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/">iOS —— 使用 Container View 实现左右侧栏</a>
-          </li>
-        
-          <li>
             <a href="/2016/04/17/iOS-Architecture-Patterns/">iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」</a>
           </li>
         
           <li>
             <a href="/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/">Swift 2之协议式编程介绍「译」</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/Xcode multiple target/">Xcode —— 使用Multi-Target管控相似App</a>
           </li>
         
       </ul>
