@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Swift 2之协议式编程介绍「译」 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原文：Introducing Protocol-Oriented Programming in Swift 2 作者：Erik Kerber 译者：Chamchamben   Swift Bird brings speedy new features to Swift 2!  备注：此教程需要安装Xcode 7及Swift 2，此时两者均可能处于beta版本。您可以通过苹果开发者门户网站下载最新">
+<meta name="keywords" content="Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift 2之协议式编程介绍「译」">
+<meta property="og:url" content="http://yoursite.com/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="原文：Introducing Protocol-Oriented Programming in Swift 2 作者：Erik Kerber 译者：Chamchamben   Swift Bird brings speedy new features to Swift 2!  备注：此教程需要安装Xcode 7及Swift 2，此时两者均可能处于beta版本。您可以通过苹果开发者门户网站下载最新">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://cdn4.raywenderlich.com/wp-content/uploads/2015/06/swift-new.jpg">
+<meta property="og:image" content="https://cdn5.raywenderlich.com/wp-content/uploads/2015/06/protocols-extend.png">
+<meta property="og:updated_time" content="2016-03-24T10:32:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift 2之协议式编程介绍「译」">
+<meta name="twitter:description" content="原文：Introducing Protocol-Oriented Programming in Swift 2 作者：Erik Kerber 译者：Chamchamben   Swift Bird brings speedy new features to Swift 2!  备注：此教程需要安装Xcode 7及Swift 2，此时两者均可能处于beta版本。您可以通过苹果开发者门户网站下载最新">
+<meta name="twitter:image" content="https://cdn4.raywenderlich.com/wp-content/uploads/2015/06/swift-new.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Introductin-Protocol-Oriented-Programming-in-Swift-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/" class="article-date">
+  <time datetime="2016-03-23T14:02:09.000Z" itemprop="datePublished">2016-03-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/技术文档翻译/">技术文档翻译</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Swift 2之协议式编程介绍「译」
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>原文：<a href="https://www.raywenderlich.com/109156/introducing-protocol-oriented-programming-in-swift-2" target="_blank" rel="noopener">Introducing Protocol-Oriented Programming in Swift 2</a></li>
+<li>作者：<a href="https://www.raywenderlich.com/u/kerber" target="_blank" rel="noopener">Erik Kerber</a></li>
+<li>译者：<a href="http://chamchamben.com" target="_blank" rel="noopener">Chamchamben</a></li>
+</ul>
+<p><img src="https://cdn4.raywenderlich.com/wp-content/uploads/2015/06/swift-new.jpg" alt=""></p>
+<p>Swift Bird brings speedy new features to Swift 2!</p>
+<hr>
+<p><code>备注</code>：此教程需要安装Xcode 7及Swift 2，此时两者均可能处于beta版本。您可以通过<a href="https://developer.apple.com/xcode/download/" target="_blank" rel="noopener">苹果开发者门户网站</a>下载最新的beta版本。『译者注：原文发布于2015.6.25，当时Xcode 7及Swift 2尚处于beta版本』。</p>
+<p>在WWDC2015，苹果发布了包含众多<a href="http://www.raywenderlich.com/108522/whats-new-in-swift-2" target="_blank" rel="noopener">新语言特性</a>的Swift 2，帮助开发者改善他们的编码方式。</p>
+<p>其中，最让人兴奋的要属<code>协议扩展（protocol extensions）</code>语法。在Swift 1中，开发者可以扩展原有的class, struct和enum类型。现在，开发者可以对protocol进行扩展了。</p>
+<p>刚看到protocol extensions时，大家可能认为这只是一个相对次要的功能，但实际上protocol extensions非常强大，强大到甚至可以改变开发者的编码方式！在这个教程中，你将会跟随我们一起探索如何使用protocol extensions语法，以及如何进行<code>「协议式编程」</code>。<br><a id="more"></a></p>
+<h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>在Xcode中，选择<code>File\New\Playground...</code>打开一个新的playground，并将playground命名为<code>SwiftProtocols</code>。由于本教程可以用在任意平台上，platform可以随意选择。点击<code>Next</code>，保存Playground。<br>创建成功后，输入下述代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">protocol Bird &#123;</span><br><span class="line">    var name: String &#123; get &#125;</span><br><span class="line">    var canFly: Bool &#123; get &#125;</span><br><span class="line">&#125;</span><br><span class="line">protocol Flyable &#123;</span><br><span class="line">    var airspeedVelocity: Double &#123; get &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们定义了一个简单的protocol <code>Bird</code>，包含属性<code>name</code>和<code>canFly</code>，同时定义了一个<code>Flyable</code>协议，包含属性<code>airSpeedVelocity</code>。</p>
+<p>在没有<code>protocol</code>的时候，大家一般会将<code>Flyable</code>定义为基类，然后通过继承的方式定义<code>Bird</code>及其他可以「飞」的类，例如飞机。在这里我们需要明确一点，<strong><em>所有的事情都由protocol开始！</em></strong></p>
+<p>当你开始定义类型时，你将会逐步发现「协议式编程」是如何使整个系统更加灵活健壮的。</p>
+<h1 id="定义遵循protocol的类型"><a href="#定义遵循protocol的类型" class="headerlink" title="定义遵循protocol的类型"></a>定义遵循protocol的类型</h1><p>在playground中，添加下述<code>struct</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct FlappyBird: Bird, Flyable &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    let flappyAmplitude: Double</span><br><span class="line">    let flappyFrequency: Double</span><br><span class="line">    let canFly = true</span><br><span class="line">    </span><br><span class="line">    var airspeedVelocity: Double &#123;</span><br><span class="line">        return 3 * flappyFrequency * flappyAmplitude</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在此，我们定义了一个新的结构体<code>FlappyBird</code>，同时遵循<code>Bird</code>和<code>Flyable</code>两个protocol。其中，属性<code>airspeedVelocity</code>是通过闭包的方式计算返回的。同时，由于可以飞行，所以<code>canFly</code>参数直接返回true。</p>
+<p>接下来，在playground中添加另外两个结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">struct Penguin: Bird &#123;</span><br><span class="line">    let name: String</span><br><span class="line">    let canFly = false</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct SwiftBird: Bird, Flyable &#123;</span><br><span class="line">    var name: String &#123; return &quot;Swift \(version)&quot; &#125;</span><br><span class="line">    let version: Double</span><br><span class="line">    let canFly = true</span><br><span class="line">    </span><br><span class="line">    var airspeedVelocity: Double &#123; return 2000.0 &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里，企鹅<code>Penguin</code>同样属于鸟类，但是不能飞。啊哈~这就体现出不使用类继承的好处了，若使用了类继承的方式，则所有子类中的<code>canFly</code>属性都只能统一了！雨燕<code>SwiftBird</code>是很快的，所以<code>airspeedVelocity</code>属性返回了2000.0，一个非常快的飞行速度。</p>
+<p>到此，相信你已经发现一些多余的代码了。每种类型的<code>Bird</code>都要重新定义<code>canFly</code>是<code>true</code>还是<code>false</code>，尽管<code>Flyable</code>已经暗示了<code>canFly = true</code>。</p>
+<h1 id="扩展协议，使其包含默认的实现"><a href="#扩展协议，使其包含默认的实现" class="headerlink" title="扩展协议，使其包含默认的实现"></a>扩展协议，使其包含默认的实现</h1><p>通过<code>protocol extensions</code>语法，开发者可以给一个<code>protocol</code>定义默认的执行方法。在<code>Bird</code>协议下，添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">extension Bird where Self: Flyable &#123;</span><br><span class="line">    var canFly: Bool &#123; return true &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在此，我们给协议<code>Bird</code>指定了一个默认的执行方法：「如果该类型包含了<code>Flyable</code>协议，则<code>canFly</code>返回<code>true</code>」。这样，所有<code>Flyable</code>的bird都不需要另外再明确声明<code>canFly = true</code>了。<br><img src="https://cdn5.raywenderlich.com/wp-content/uploads/2015/06/protocols-extend.png" alt=""></p>
+<p>Swift 1.2中介绍了<code>where</code>语法在<code>if-let</code>中的使用，而Swift 2则给我们带来了有条件地扩展protocol的能力。</p>
+<p>接下来，在<code>FlappyBird</code>和<code>SwiftBird</code>结构体中删除<code>let canFly = true</code>语句，你会发现playground运行一切正常，因为，<code>protocol extension</code>已经帮你处理好<code>canFly</code>属性了。</p>
+<h1 id="为什么不使用基类"><a href="#为什么不使用基类" class="headerlink" title="为什么不使用基类"></a>为什么不使用基类</h1><p>协议扩展（protocol extensions）及其默认执行方法看起来可能跟使用基类和<a href="https://en.wikipedia.org/wiki/Abstract_type" target="_blank" rel="noopener">抽象类（abstract type）</a>相似，但Swift有几点优势：</p>
+<ul>
+<li>由于类型可以遵循多个protocol，因此可以被多个protocols的默认行为修饰。与多重继承的方式不同，协议扩展不会引入额外的属性及状态。</li>
+<li>protocol可以被class、struct及enum遵循，而基类和多重继承均只能限制在类之间使用。</li>
+</ul>
+<p>换句话说，协议扩展提供了让value类型也能用上默认执行方法，而不仅是类专有了。</p>
+<p>按照上述步骤，相信开发者已经知道如何在struct中应用protocol了；接下来，我们尝试在enum类型中应用protocol。请在playground中输入下述代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">enum UnladenSwallow: Bird, Flyable &#123;</span><br><span class="line">    case African</span><br><span class="line">    case European</span><br><span class="line">    case Unknown</span><br><span class="line">    </span><br><span class="line">    var name: String &#123;</span><br><span class="line">        switch self &#123;</span><br><span class="line">        case .African:</span><br><span class="line">            return &quot;African&quot;</span><br><span class="line">        case .European:</span><br><span class="line">            return &quot;European&quot;</span><br><span class="line">        case .Unknown:</span><br><span class="line">            return &quot;what do you mean? African or European?&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    var airspeedVelocity: Double &#123;</span><br><span class="line">        switch self &#123;</span><br><span class="line">        case .African:</span><br><span class="line">            return 10.0</span><br><span class="line">        case .European:</span><br><span class="line">            return 9.9</span><br><span class="line">        case .Unknown:</span><br><span class="line">            fatalError(&quot;You are thrown from the bridge of death!&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>跟其他value类型一样，在<code>enum</code>中，开发者只需给协议中的属性定义正确的实现。由于<code>UnladenSwallow</code>同时遵循<code>Bird</code>和<code>Flyable</code>，故<code>canFlay</code>属性不需要定义其实现，默认为<code>true</code>。<br>至此，你还认为本教程中的<code>airspeedVelocity</code>不会包含一个蟒蛇的引用吗？『译者注：水平有限，此处翻译生硬，原文为「<em>Did you really think this tutorial involving <code>airspeedVelocity</code> wouldn’t include a Monty Python reference?:]</em>」』</p>
+<h1 id="协议扩展的应用"><a href="#协议扩展的应用" class="headerlink" title="协议扩展的应用"></a>协议扩展的应用</h1><p>对于开发者来说，协议扩展最常用于对现有协议的扩展，包括Swift原生库及第三方开发者编写的框架。<br>在playground中，添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">extension CollectionType &#123;</span><br><span class="line">    func skip(skip: Int) -&gt; [Generator.Element] &#123;</span><br><span class="line">        guard skip != 0 else &#123; return [] &#125;</span><br><span class="line">        </span><br><span class="line">        var index = self.startIndex</span><br><span class="line">        var result: [Generator.Element] = []</span><br><span class="line">        var i = 0</span><br><span class="line">        repeat &#123;</span><br><span class="line">            if i % skip == 0 &#123;</span><br><span class="line">                result.append(self[index])</span><br><span class="line">            &#125;</span><br><span class="line">            index = index.successor()</span><br><span class="line">            i += 1</span><br><span class="line">        &#125;while (index != self.endIndex)</span><br><span class="line">        </span><br><span class="line">        return result</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在此，我们对<code>CollectionType</code>协议进行扩展，添加一个<code>skip(_:)</code>方法，可以把集合中下标能与x整除的元素去除，并返回处理后的集合。</p>
+<p>由于<code>CollectionType</code>是一个被<code>arrays</code>和<code>dictionaries</code>遵循的协议，所以对<code>CollectionType</code>进行扩展后，<code>array</code>和<code>dictionary</code>都可以使用<code>skip(_:)</code>方法了！在playground中，增加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let bunchaBirds: [Bird] = [UnladenSwallow.African,</span><br><span class="line">                           UnladenSwallow.European,</span><br><span class="line">                           UnladenSwallow.Unknown,</span><br><span class="line">                           Penguin.init(name: &quot;King Penguin&quot;),</span><br><span class="line">                           SwiftBird.init(version: 2.0),</span><br><span class="line">                           FlappyBird.init(name: &quot;Felipe&quot;, flappyAmplitude: 3.0, flappyFrequency: 20.0)]</span><br><span class="line"></span><br><span class="line">bunchaBirds.skip(3)</span><br></pre></td></tr></table></figure>
+<p>在此，我们定义了包含了多种鸟类的数组<code>bunchaBirds</code>。由于<code>CollectionType</code>协议扩展了<code>skip(_:)</code>方法，因此我们可以调用<code>skip(_:)</code>方法来对数组进行处理。</p>
+<h1 id="扩展你的协议"><a href="#扩展你的协议" class="headerlink" title="扩展你的协议"></a>扩展你的协议</h1><p>除了可以扩展Swift原生协议，给Swift原生协议定义默认实现也同样让人激动。</p>
+<p>在playground中，把协议<code>Bird</code>修改为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protocol Bird: BolleanType &#123;</span><br></pre></td></tr></table></figure>
+<p>由于遵循了<code>BooleanType</code>协议，因此，在<code>Bird</code>协议中需要添加一个<code>boolValue</code>来表达bool值。这是不是意味着开发者必须在每个遵循<code>Bird</code>协议的类型下都给<code>boolValue</code>设计一个实现呢？</p>
+<p>当然，你可以使用协议扩展的方式给<code>boolValue</code>设计一个默认实现。在playground的<code>Bird</code>下方增加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">extension BooleanType where Self: Bird &#123;</span><br><span class="line">    var boolValue: Bool &#123;</span><br><span class="line">        return self.canFly</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样扩展了协议之后，<code>canFly</code>属性就可以充当遵循<code>Bird</code>协议类型的boolValue了。</p>
+<p>下面我们通过下述代码进行测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if UnladenSwallow.African &#123;</span><br><span class="line">    print(&quot;I can fly!&quot;);</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    print(&quot;Guess I&apos;ll just sit here :[&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在此，你会看到<code>I can fly!</code>的打印。但尤其需要注意的是，在代码中，你不过在<code>if</code>语句后使用了类型，并未使用任何额外的判断语句！</p>
+<h1 id="协议扩展对Swift原生库的影响"><a href="#协议扩展对Swift原生库的影响" class="headerlink" title="协议扩展对Swift原生库的影响"></a>协议扩展对Swift原生库的影响</h1><p>到目前为止，相信你已经体会到协议扩展对开发者代码带来的扩展性。同时，协议扩展也給Swift原生库代码的编写带来了极大的扩展性。</p>
+<p>通过遵循<code>map</code>, <code>reduce</code>, <code>filter</code>协议，Swift可以提升原生库的函数式编程模板。这些方法在<code>CollectionType</code>类型中得到不少体现，例如<code>Array</code>类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&quot;frog&quot;, &quot;pants&quot;].map&#123;$0.length&#125;.reduce(0) &#123; $0 + $1 &#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码中，让<code>array</code>调用<code>map</code>方法，得到一个新的<code>array</code>，然后让新<code>array</code>调用<code>reduce</code>方法，得到新<code>array</code>中的元素累加和9.</p>
+<p>在此，<code>map</code>和<code>reduce</code>方法都成为了<code>Array</code>的原生方法。如果你按住<code>Cmd</code>并点击<code>map</code>，就可以看到<code>map</code>方法是如何定义的。</p>
+<p>在Swift 1.2中，你将看到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// Swift 1.2</span><br><span class="line">extension Array : _ArrayType &#123;</span><br><span class="line">    /// Return an `Array` containning the results of calling</span><br><span class="line">    /// `transform(x)` on each element `x` of `self`</span><br><span class="line">    func map&lt;U&gt;(transform: (T) -&gt; U) -&gt; [U]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里，<code>map</code>方法被定义为<code>Array</code>类型的扩展。但是，Swift的高阶函数并非只提供<code>Array</code>使用，应该所有的<code>CollectionType</code>都能够使用，那么在Swift 1.2中是如何实现的呢？</p>
+<p>如果让<code>Range</code>调用<code>map</code>方法，你可以看到如下定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// Swift 1.2</span><br><span class="line">extension Range &#123;</span><br><span class="line">  /// Return an array containing the results of calling</span><br><span class="line">  /// `transform(x)` on each element `x` of `self`.</span><br><span class="line">  func map&lt;U&gt;(transform: (T) -&gt; U) -&gt; [U]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至此，我们发现在Swift 1.2中，因为<code>struct</code>不能成为子类，也不能包含公用实现，所以必须给所有<code>CollectionType</code>都重新定义<code>map</code>的实现。</p>
+<p>这种方式不仅限制了Swift标准库，同时也限制了开发者对Swift中各种类型的使用方式。</p>
+<p>下列函数形参为「遵循<code>Flyable</code>协议的<code>CollectionType</code>」，返回值为数值最高的<code>airspeedVelocity</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func topSpeed&lt;T: CollectionType where T.GeneratorType: Flyable&gt;(collection: T) -&gt; Double &#123;</span><br><span class="line">  collection.map &#123; $0.airspeedVelocity &#125;.reduce &#123; max($0, $1)&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于Swift 1.2没有协议扩展功能，上述代码实际上会引入编译错误。<code>map</code>和<code>reduce</code>只存在于一个具体的定义好的类型中，而非存在于抽象的<code>CollectionType</code>中。</p>
+<p>但是，在Swift 2.0 协议扩展的功能下，<code>map</code>方法的定义变成了如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">extension CollectionType &#123;</span><br><span class="line">    /// Returns an `Array` containing the results of mapping `transform`</span><br><span class="line">    /// over `self`.</span><br><span class="line">    ///</span><br><span class="line">    /// - Complexity: O(N).</span><br><span class="line">    @warn_unused_result</span><br><span class="line">    public func map&lt;T&gt;(@noescape transform: (Self.Generator.Element) -&gt; T) -&gt; [T]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>虽然不能看到看到方法<code>map</code>的源码 —— 至少等到Swift 2正式发布将会是开源的！现在，<code>CollectionType</code>有了一个默认的<code>map</code>实现，所有遵循<code>CollectionType</code>协议的类型都将支持<code>map</code>方法。</p>
+<p>接下来，在playground中添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func topSpeed&lt;T: CollectionType where T.Generator.Element == Flyable&gt;(c : T) -&gt; Double &#123;</span><br><span class="line">    return c.map(&#123;$0.airspeedVelocity&#125;).reduce(0) &#123; max($0, $1) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述函数中，<code>map</code>和<code>reduce</code>方法均能被遵循<code>CollectionType</code>协议的类型调用。现在，通过下述代码，即可算出「哪种鸟类飞得最快」了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let flyingBirds: [Flyable] =</span><br><span class="line">    [UnladenSwallow.African,</span><br><span class="line">    UnladenSwallow.European,</span><br><span class="line">    SwiftBird.init(version: 2.0)]</span><br><span class="line"></span><br><span class="line">topSpeed(flyingBirds)</span><br></pre></td></tr></table></figure>
+<h1 id="接下来应该做什么"><a href="#接下来应该做什么" class="headerlink" title="接下来应该做什么"></a>接下来应该做什么</h1><p>首先，你可以下载本篇教程中完整的<a href="http://www.raywenderlich.com/wp-content/uploads/2015/06/SwiftProtocols.playground.zip" target="_blank" rel="noopener">playground代码</a>。</p>
+<p>通过本教程，相信你已经体会到「协议式编程」的威力。你可以自己定义简单的协议然后在使用时根据需要去扩展它，同时，你也可以给先有的协议编写默认的实现，类似于基类但不同于基类的，协议还能够支持structs和enums。</p>
+<p>再者，协议扩展不仅可以扩展你自己写的协议，同时也可以扩展Swift标准库里面的协议，Cocoa及Cocoa Touch的协议。</p>
+<p>如果想知道Swift 2中还有什么新功能，你可以通过我们的文章<a href="http://www.raywenderlich.com/108522/whats-new-in-swift-2" target="_blank" rel="noopener">「what’s new in Swift 2.0」</a>或者苹果官方博客<a href="https://developer.apple.com/swift/blog/?id=29" target="_blank" rel="noopener">「Apple’s Swift blog」</a>中查看。</p>
+<p>同时，你可以通过观看WWDC的<a href="https://developer.apple.com/videos/wwdc/2015/?id=408" target="_blank" rel="noopener">「Protocol Oriented Programming」</a>视频，深入了解「协议式编程」背后的理论。</p>
+<p>如果有任何问题？欢迎留言讨论！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/" data-id="cjg31vbqa0004witpq6ga4dxi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/17/iOS-Architecture-Patterns/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/08/Xcode multiple target/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Xcode —— 使用Multi-Target管控相似App</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IOS技术/">IOS技术</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS技术/">iOS技术</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客搭建/">博客搭建</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术文档翻译/">技术文档翻译</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOS开发/">IOS开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS开发/">iOS开发</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/IOS开发/" style="font-size: 10px;">IOS开发</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/iOS开发/" style="font-size: 20px;">iOS开发</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/17/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/13/vue+koa2+mySQL+Ngnix框架搭建备忘/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/06/iOS — Slider with Container View/">iOS —— 使用 Container View 实现左右侧栏</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/">iOS —— 使用 Container View 实现左右侧栏</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/17/iOS-Architecture-Patterns/">iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

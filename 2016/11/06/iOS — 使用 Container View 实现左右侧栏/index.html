@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS —— 使用 Container View 实现左右侧栏 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1. 前言 1.1 开发环境 1.2 工具 1.3 完整工程 1.4 最终效果   2. 实现过程 2.1 思路 2.2 Container View 介绍 2.3 代码框架搭建 2.3.1 Storyboard 搭建 2.3.2 代码目录搭建   2.4 ViewController 代码实现 2.5 ContainersViewController 2.6 MainViewControll">
+<meta name="keywords" content="iOS开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS —— 使用 Container View 实现左右侧栏">
+<meta property="og:url" content="http://yoursite.com/2016/11/06/iOS — 使用 Container View 实现左右侧栏/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1. 前言 1.1 开发环境 1.2 工具 1.3 完整工程 1.4 最终效果   2. 实现过程 2.1 思路 2.2 Container View 介绍 2.3 代码框架搭建 2.3.1 Storyboard 搭建 2.3.2 代码目录搭建   2.4 ViewController 代码实现 2.5 ContainersViewController 2.6 MainViewControll">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_effect.gif">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_ios_view_structure.jpeg">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_ios_effect.gif">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_drawlayout_code.jpeg">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_container_view_embed.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_code_structure.jpeg">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_code_frame_run.jpeg">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_main_view_controller.jpeg">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_left_menu_view">
+<meta property="og:updated_time" content="2016-11-08T01:46:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS —— 使用 Container View 实现左右侧栏">
+<meta name="twitter:description" content="1. 前言 1.1 开发环境 1.2 工具 1.3 完整工程 1.4 最终效果   2. 实现过程 2.1 思路 2.2 Container View 介绍 2.3 代码框架搭建 2.3.1 Storyboard 搭建 2.3.2 代码目录搭建   2.4 ViewController 代码实现 2.5 ContainersViewController 2.6 MainViewControll">
+<meta name="twitter:image" content="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_effect.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS — 使用 Container View 实现左右侧栏" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/" class="article-date">
+  <time datetime="2016-11-06T01:33:32.000Z" itemprop="datePublished">2016-11-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS技术/">iOS技术</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS —— 使用 Container View 实现左右侧栏
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- MarkdownTOC -->
+<ul>
+<li><a href="#1-前言">1. 前言</a><ul>
+<li><a href="#11-开发环境">1.1 开发环境</a></li>
+<li><a href="#12-工具">1.2 工具</a></li>
+<li><a href="#13-完整工程">1.3 完整工程</a></li>
+<li><a href="#14-最终效果">1.4 最终效果</a></li>
+</ul>
+</li>
+<li><a href="#2-实现过程">2. 实现过程</a><ul>
+<li><a href="#21-思路">2.1 思路</a></li>
+<li><a href="#22-container-view-介绍">2.2 <code>Container View</code> 介绍</a></li>
+<li><a href="#23-代码框架搭建">2.3 代码框架搭建</a><ul>
+<li><a href="#231-storyboard-搭建">2.3.1 <code>Storyboard</code> 搭建</a></li>
+<li><a href="#232-代码目录搭建">2.3.2 代码目录搭建</a></li>
+</ul>
+</li>
+<li><a href="#24-viewcontroller-代码实现">2.4 <code>ViewController</code> 代码实现</a><ul>
+<li><a href="#25-containersviewcontroller">2.5 <code>ContainersViewController</code></a></li>
+<li><a href="#26-mainviewcontroller">2.6 <code>MainViewController</code></a><ul>
+<li><a href="#261-storyboard-实现">2.6.1 <code>storyboard</code> 实现</a></li>
+<li><a href="#262-代码实现">2.6.2 代码实现</a></li>
+</ul>
+</li>
+<li><a href="#263-leftmenuviewcontroller">2.6.3 <code>LeftMenuViewController</code></a></li>
+<li><a href="#264-rightmenuviewcontroller">2.6.4 <code>RightMenuViewController</code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3-坑！">3. 坑！</a></li>
+<li><a href="#4-写在最后">4. 写在最后</a></li>
+</ul>
+<!-- /MarkdownTOC -->
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h1><p>前段时间做 Android 开发时使用系统控件 <code>DrawerLayout</code> 轻松实现了左右侧栏，最近做 iOS 开发时恰好需要用到，本想着跟 Android 一样会有系统级的控件提供，谁料 Apple 并不提倡使用「侧栏」的交互模式，未提供相关控件。由于项目需要用到左右侧栏，摆在面前的只有两个选择：使用第三方开源库，或自己造轮子。<br>首先，我们先看看使用 Android 系统控件实现的侧栏效果：</p>
+<center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_effect.gif" width="40%" height="40%"><br><br>Figure 1.1 : <code>DrawerLayout</code> 实现效果<br></center><br>从图1.1中可以看出，<code>DrawerLayout</code> 大致实现了下述几种交互：<br><br><em> 左侧栏未弹出的情况下：
+ </em> 点击左上角 Menu 按钮，左侧栏弹出，同时添加黑色半透明 View 对主界面进行遮盖<br> <em> 手指从屏幕左方边缘向右滑动，左侧栏相应右移，黑色背景 View 的透明度随右移距离增加而变深；若右划距离不超过侧栏宽度一半，手指松开后侧栏收回；若右划距离超过侧栏一半，则侧栏弹出 。（ <em>此功能在模拟器上未能触发，需在真机上重现</em> ）
+</em> 左侧栏已弹出的情况下：<br> <em> 选中左侧栏中的某个 Item ，左侧栏收回
+ </em> 点击黑色半透明 View，左侧栏收回<br> <em> 手指向左滑动，左侧栏相应进行左划，黑色背景 View 的透明度随左移距离增加而变浅；若左划距离不超过侧栏宽度一半，手指松开后侧栏回到原位置；若左划距离超过侧栏宽度一半，左侧栏收回<br><br>在下载尝试了几款 iOS 侧栏开源库后，发现基本上都不能满足 <code>DrawerLayout</code> 的相同交互，而且大部分都是使用纯代码实现，与公司 iOS 项目遵循的 storyboard 优先原则有所违背，最终决定造个轮子，让 iOS 及 Android app 的 UX/UI 尽可能一致。<br><br>## 1.1 开发环境
+</em> macOS Sierra : 10.12.1 (16B2555)<br><em> Xcode : 8.1 (8B62) 
+</em> Objective-C<br><em> Android Studio : 2.2.2<br><br>## 1.2 工具
+</em> Keynote<br><em> GIPHY Capture
+</em> MWeb<br><em> IconJar
+</em> Sketch<br><br>## 1.3 完整工程<br>Talk is cheap, show me the code!<br><a href="https://github.com/B5ben86/DrawerLayoutDemo" target="_blank" rel="noopener">DrawerLayoutDemo</a><br><br>## 1.4 最终效果<br><center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_ios_view_structure.jpeg" width="100%" height="100%"><br><br>Figure 1.2 : iOS 页面结构<br></center>
+
+<center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_ios_effect.gif" width="40%" height="40%"><br><br>Figure 1.3 : iOS <code>DrawerLayoutDemo</code> 实现效果<br></center>
+
+<a id="more"></a>
+<h1 id="2-实现过程"><a href="#2-实现过程" class="headerlink" title="2. 实现过程"></a>2. 实现过程</h1><h2 id="2-1-思路"><a href="#2-1-思路" class="headerlink" title="2.1 思路"></a>2.1 思路</h2><center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_android_drawlayout_code.jpeg" width="100%" height="100%"><br>Figure 2.1 : <code>DrawerLayout</code> 实现方式<br></center><br>从 Figure 2.1 中可以看出，在 <code>Activity</code> （ <em>相当于 iOS 的ViewController</em> ） 中，包含了三个 <code>RelativeLayout</code>，分别代表左侧栏、主页面和右侧栏，其中左侧栏和右侧栏的默认起始坐标均处于屏幕可视范围外，所以对用户来说，左右侧栏在弹出时才加载显示，但事实上在 <code>Activity</code> 加载时，左右侧栏已经加载了，只是显示位置在屏幕范围外而已。<br><br>同理，在 iOS 中，我们可以在 <code>ViewController</code> 中添加三个 <code>Container View</code> ，分别对应左侧栏、主页面和右侧栏，并实现<br><br><em> 在 <code>ViewController</code> 加载时，将左侧栏和右侧栏的 <code>frame</code> 均设置在屏幕范围外来达到侧栏「隐藏」效果
+</em> 在侧栏弹出和收回时，增加页面平移动画，实现弹出和收回的动画效果<br><em> 在手指滑动时，捕捉滑动手势，实现页面随手指移动的动画效果
+</em> 在 <code>ViewController</code> 中，增加 <code>backgroundView</code>，使其层级处于主页面 <code>view</code> 之上，侧栏 <code>view</code> 之下，实现黑色半透明背景<br><br>## 2.2 <code>Container View</code> 介绍<br><a href="https://developer.apple.com/library/content/featuredarticles/ViewControllerPGforiPhoneOS/ImplementingaContainerViewController.html" target="_blank" rel="noopener">苹果 <code>Container View</code> 官方教程</a><br><br>&gt; Container view controllers are a way to combine the content from multiple view controllers into a single user interface. Container view controllers are most often used to facilitate navigation and to create new user interface types based on existing content.<br>&gt; Examples of container view controllers in UIKit include UINavigationController, UITabBarController, and UISplitViewController, all of which facilitate navigation between different parts of your user interface.<br><br>&gt; <img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_container_view_embed.png" alt=""><br><br>根据苹果的官方介绍，<code>Container View</code> 主要用于将多个页面的内容整合到一个页面，同时，每个 <code>Container View</code> 均对应一个独立的 <code>View Controller</code>，将每个 <code>Container View</code> 的功能解耦，避免主 <code>View Controller</code> 过于臃肿。这样看来，<code>Container View</code> 用于实现 <code>DrawerLayout</code> 最合适不过。<br><br><br>## 2.3 代码框架搭建<br><center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_code_structure.jpeg" width="100%" height="100%"><br>Figure 2.2 : 代码框架<br></center><br>### 2.3.1 <code>Storyboard</code> 搭建<br>根据图2.2，我们在 <code>Main.storyboard</code> 中<br><br><em> 创建一个 <code>ContainersViewController</code> ，作为 <code>RootViewController</code>
+</em> <code>ContainersViewController</code> 里面放置三个与屏幕同样大小的 <code>Container View</code> ，分别对应<br> <em> <code>LeftMenuViewController</code>
+ </em> <code>MainViewController</code><br> <em> <code>RightMenuViewController</code>
+</em> 新建一个与屏幕同样大小的 <code>View</code>，作为 <code>backgroundView</code>，设置 <code>Background = Black Color; Alpha = 0.5</code><br><br>考虑到使用系统内建的 <code>Navigation Bar</code> ，以及 <code>MainViewController</code> 里面通常都会有一些 <code>push navigation</code> 的页面跳转需求，故通过 <code>Editor</code> -&gt; <code>Embed in</code> -&gt; <code>Navigation Controller</code> 给 <code>MainViewController</code> 增加一个 <code>Navigation Controller</code> 作为 <code>parent controller</code> ，同理，可使用相同方式添加 <code>Tab Bar Controller</code> 。<br><br>### 2.3.2 代码目录搭建<br>对应 <code>Main.storyboard</code> 中的页面，新建<br><br><em> ContainerViewController.h &amp; .m
+</em> MainViewController.h &amp; .m<br><em> LeftMenuViewController.h &amp; .m
+</em> RightMenuViewController.h &amp; .m<br><br>做好必要的 <code>AutoLayout</code> 设置，以及 <code>ViewController</code> 映射后，我们在 <code>ContainerViewController.m</code> 的 <code>viewDidLayoutSubviews</code> 中增加少量代码，编译运行看看页面架构是否符合需求。<br><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@interface ContainerViewController ()</span><br><span class="line"></span><br><span class="line">@property (weak, nonatomic) IBOutlet UIView *leftMenuContainerView;</span><br><span class="line">@property (weak, nonatomic) IBOutlet UIView *rightMenuContainerView;</span><br><span class="line">@property (weak, nonatomic) IBOutlet UIView *mainContainerView;</span><br><span class="line"></span><br><span class="line">@property (weak, nonatomic) IBOutlet UIView *backgroundView;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">@implementation ContainerViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLayoutSubviews &#123;</span><br><span class="line">    [super viewDidLayoutSubviews];</span><br><span class="line">    </span><br><span class="line">    /* 测试代码，待删*/</span><br><span class="line">    //获取 ContainersView 的 frame</span><br><span class="line">    CGRect windowFrame = self.view.frame;</span><br><span class="line">    </span><br><span class="line">    //将 LeftMenuContainerView 的 x 轴起始坐标左移出屏幕左侧</span><br><span class="line">    [self.leftMenuContainerView setFrame:CGRectMake (100.0 - windowFrame.size.width, 0, self.leftMenuContainerView.frame.size.width, self.leftMenuContainerView.frame.size.height)];</span><br><span class="line">    //将 RightMenuContainerView 的 x 轴起始坐标右移到屏幕右侧左方</span><br><span class="line">    [self.rightMenuContainerView setFrame:CGRectMake (windowFrame.size.width - 100.0, 0, self.rightMenuContainerView.frame.size.width, self.rightMenuContainerView.frame.size.height)];</span><br><span class="line">    //将 backGroundView 颜色设置为黑色，透明度设置为 50%</span><br><span class="line">    [self.backgroundView setBackgroundColor:[UIColor blackColor]];</span><br><span class="line">    [self.backgroundView setAlpha:0.5];</span><br><span class="line">    /* 测试代码，待删*/</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure><br><br>运行效果如下：<br><center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_code_frame_run.jpeg" width="50%" height="50%"><br><br>Figure 2.3 : 代码框架运行效果<br></center>
+
+<h2 id="2-4-ViewController-代码实现"><a href="#2-4-ViewController-代码实现" class="headerlink" title="2.4 ViewController 代码实现"></a>2.4 <code>ViewController</code> 代码实现</h2><p>对章节 1 中描述的交互需求进行分解，我们可以得到每个 <code>ViewController</code> 需要实现的功能</p>
+<ul>
+<li><code>ContainersViewController</code><ul>
+<li>页面初始化时设置 <code>LeftMenuContainerView</code> 及 <code>RightMenuContainerView</code> 的初始位置为屏幕两侧；<code>backgroundView</code> 的默认状态为 <code>alpha = 0.0, hidden = YES</code> </li>
+<li><code>LeftMenuContainerView</code> 弹出及收回</li>
+<li><code>RightMenuContainerView</code> 弹出及收回</li>
+<li>左侧屏幕边缘滑入手势捕捉，<code>LeftMenuContainerView</code> 随手势在 x 轴上平移，松手时判断需弹出或收回；<code>backgroundVIew</code> 透明度随手势渐变</li>
+<li>右侧屏幕边缘滑入手势捕捉，<code>RightMenuContainerView</code> 随手势在 x 轴上平移，松手时判断需弹出或收回；<code>backgroundVIew</code> 透明度随手势渐变</li>
+<li>当 <code>LeftMenuContainerView</code> 已弹出时，屏蔽右侧屏幕边缘滑入手势捕捉，收回后重新开启；同理，<code>RightMenuContainerView</code> 弹出后，屏蔽左侧屏幕边缘滑入手势捕捉，收回后重新开启</li>
+</ul>
+</li>
+<li><code>MainViewController</code><ul>
+<li>点击 <code>Navigation Bar</code> 上的 <code>LeftMenu</code> 按钮后，「通知」<code>ContainersViewController</code> 弹出左侧栏</li>
+<li>点击 <code>Navigation Bar</code> 上的 <code>RightMenu</code> 按钮后，「通知」<code>ContainersViewController</code> 弹出右侧栏</li>
+</ul>
+</li>
+<li><code>LeftMenuViewController</code><ul>
+<li><code>View</code> 的右侧设置一个全透明的 <code>transparentView</code> ，用于「透视」 <code>ContainersViewController</code> 上的 <code>backgroundView</code></li>
+<li>点击右侧的 <code>transparentView</code>，「通知」 <code>ContainersViewController</code> 收回左侧栏</li>
+<li>点击 <code>LeftMenuViewController</code> 上的「项目」，「通知」 <code>ContainersViewController</code> 收回左侧栏</li>
+<li>捕捉滑动手势，<code>LeftMenuViewController</code> 随手势在 x 轴上平移，松手时判断需恢复到弹出状态，还是通知 <code>ContainersViewController</code> 收回左侧栏</li>
+</ul>
+</li>
+<li><code>RightMenuViewController</code><ul>
+<li><code>View</code> 的左侧设置一个全透明的 <code>transparentView</code> ，用于「透视」 <code>ContainersViewController</code> 上的 <code>backgroundView</code></li>
+<li>点击左侧的 <code>transparentView</code>，「通知」 <code>ContainersViewController</code> 收回右侧栏</li>
+<li>点击 <code>RightMenuViewController</code> 上的「项目」，「通知」 <code>ContainersViewController</code> 收回右侧栏</li>
+<li>捕捉滑动手势，<code>RightMenuViewController</code> 随手势在 x 轴上平移，松手时判断需恢复到弹出状态，还是通知 <code>ContainersViewController</code> 收回右侧栏</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>讲到这里，相信大家都可以明显地感受到 <code>Container View</code> 的好处。通过使用 <code>Container View</code> 对 <code>ViewController</code> 的功能进行解耦，在避免产生单个臃肿 <code>ViewController</code> 的同时，又能很好地实现复杂的单页面功能；同时对多尺寸、横竖屏的适配也更灵活方便，推荐大家多使用。</p>
+</blockquote>
+<p><strong>这里插播一下，上面功能分析提到的「通知」，有很多种实现方式，包括但不限于 <code>NSNotificationCenter</code> ，<code>Delegate</code> ，<code>函数调用</code> 。本教程的「通知」使用的是 <code>函数调用</code> 的方式。</strong></p>
+<p>「万事俱备，只欠东风」，功能分解完毕，接下来只需逐个击破！</p>
+<h3 id="2-5-ContainersViewController"><a href="#2-5-ContainersViewController" class="headerlink" title="2.5 ContainersViewController"></a>2.5 <code>ContainersViewController</code></h3><p>首先，记得将章节 2.3.2 中的测试代码删除。</p>
+<ul>
+<li>页面初始化时设置 <code>LeftMenuContainerView</code> 及 <code>RightMenuContainerView</code> 的初始位置为屏幕两侧；<code>backgroundView</code> 的默认状态为 <code>alpha = 0.0, hidden = YES</code> </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLayoutSubviews &#123;</span><br><span class="line">    [super viewDidLayoutSubviews];</span><br><span class="line">    </span><br><span class="line">    [self viewItemInitial];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//... other functions ...</span><br><span class="line"></span><br><span class="line">- (void)viewItemInitial &#123;</span><br><span class="line">    //设置 backgroundView 初始隐藏状态及透明度</span><br><span class="line">    [self.backgroundView setAlpha:0.0];</span><br><span class="line">    [self.backgroundView setHidden:YES];</span><br><span class="line">    </span><br><span class="line">    CGRect windowFrame = self.view.frame;</span><br><span class="line">    CGFloat startX = 0.0;</span><br><span class="line">    //设置 leftMenuContainerView 初始位置</span><br><span class="line">    startX = -windowFrame.size.width;</span><br><span class="line">    [self.leftMenuContainerView setFrame:CGRectMake(startX,</span><br><span class="line">                                                   self.leftMenuContainerView.frame.origin.y,</span><br><span class="line">                                                   self.leftMenuContainerView.frame.size.width,</span><br><span class="line">                                                   self.leftMenuContainerView.frame.size.height)];</span><br><span class="line">    </span><br><span class="line">    //设置 rightMenuContainerView 初始位置</span><br><span class="line">    startX = windowFrame.size.width;</span><br><span class="line">    [self.rightMenuContainerView setFrame:CGRectMake(startX,</span><br><span class="line">                                                     self.rightMenuContainerView.frame.origin.y,</span><br><span class="line">                                                     self.rightMenuContainerView.frame.size.width,</span><br><span class="line">                                                     self.rightMenuContainerView.frame.size.height)];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>backgroundView</code> 渐隐及渐显动画；需暴露接口供其他 <code>ViewController</code> 使用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (void) showBackgroundView &#123;</span><br><span class="line">    [self.backgroundView setHidden:NO];</span><br><span class="line">    </span><br><span class="line">    [UIView animateWithDuration:self.bgViewAnimationDuration animations:^&#123;</span><br><span class="line">        [self.backgroundView setAlpha:self.bgViewFinalAlpha];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void) dismissBackgroundView &#123;</span><br><span class="line">    [UIView animateWithDuration:self.bgViewAnimationDuration animations:^&#123;</span><br><span class="line">        [self.backgroundView setAlpha:0.0];</span><br><span class="line">    &#125; completion:^(BOOL finished) &#123;</span><br><span class="line">        [self.backgroundView setHidden:YES];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>LeftMenuContainerView</code> 弹出及收回；<code>RightMenuContainerView</code> 弹出及收回动画；需暴露接口供其他 <code>ViewController</code> 使用</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">#pragma public function</span><br><span class="line">- (void)showLeftMenu &#123;</span><br><span class="line">    [self showMenu:self.leftMenuContainerView menuType:MENU_TYPE_LEFT_MENU];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dismissLeftMenu &#123;</span><br><span class="line">    [self dismissMenu:self.leftMenuContainerView menuType:MENU_TYPE_LEFT_MENU];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)showRightMenu &#123;</span><br><span class="line">    [self showMenu:self.rightMenuContainerView menuType:MENU_TYPE_RIGHT_MENU];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dismissRightMenu &#123;</span><br><span class="line">    [self dismissMenu:self.rightMenuContainerView menuType:MENU_TYPE_RIGHT_MENU];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma private function</span><br><span class="line">- (void)showMenu:(UIView *) view menuType:(MENU_TYPE) menuType &#123;</span><br><span class="line">    CGFloat finalX = 0.0;</span><br><span class="line">    </span><br><span class="line">    if (menuType == MENU_TYPE_UNKNOWN) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    [UIView animateWithDuration:self.menuAnimationDuration animations:^&#123;</span><br><span class="line">        [view setFrame:CGRectMake(finalX,</span><br><span class="line">                                  view.frame.origin.y,</span><br><span class="line">                                  view.frame.size.width,</span><br><span class="line">                                  view.frame.size.height)];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dismissMenu:(UIView *) view menuType:(MENU_TYPE) menuType &#123;</span><br><span class="line">    CGRect windowFrame = self.view.frame;</span><br><span class="line">    </span><br><span class="line">    CGFloat finalX = 0.0;</span><br><span class="line">    </span><br><span class="line">    if (menuType == MENU_TYPE_LEFT_MENU) &#123;</span><br><span class="line">        finalX = 0 - windowFrame.size.width;</span><br><span class="line">    &#125;</span><br><span class="line">    else if (menuType == MENU_TYPE_RIGHT_MENU) &#123;</span><br><span class="line">        finalX = windowFrame.size.width;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    [UIView animateWithDuration:self.menuAnimationDuration animations:^&#123;</span><br><span class="line">        [view setFrame:CGRectMake(finalX,</span><br><span class="line">                                  view.frame.origin.y,</span><br><span class="line">                                  view.frame.size.width,</span><br><span class="line">                                  view.frame.size.height)];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>双侧屏幕边缘滑入手势捕捉，<code>LeftMenuContainerView</code> 或 <code>RightMenuContainerView</code> 随手势在 x 轴上平移，松手时判断需弹出或收回；<code>backgroundVIew</code> 透明度随手势渐变</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">- (void)gestureRecognizerInitial &#123;</span><br><span class="line">    self.screenEdgePanGestureRecognizerLeft = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(screenEdgePanGestureRecognizerHandler:)];</span><br><span class="line">    [self.screenEdgePanGestureRecognizerLeft setEdges:UIRectEdgeLeft];</span><br><span class="line">    </span><br><span class="line">    self.screenEdgePanGestureRecognizerRight = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(screenEdgePanGestureRecognizerHandler:)];</span><br><span class="line">    [self.screenEdgePanGestureRecognizerRight setEdges:UIRectEdgeRight];</span><br><span class="line">    </span><br><span class="line">    [self.view addGestureRecognizer:self.screenEdgePanGestureRecognizerLeft];</span><br><span class="line">    [self.view addGestureRecognizer:self.screenEdgePanGestureRecognizerRight];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)screenEdgePanGestureRecognizerHandler:(UIScreenEdgePanGestureRecognizer *)gestureRecognizer &#123;</span><br><span class="line">    if ((gestureRecognizer.edges == UIRectEdgeLeft) || (gestureRecognizer.edges == UIRectEdgeRight)) &#123;</span><br><span class="line">        //获取手指相对于屏幕的坐标</span><br><span class="line">        CGPoint gesturePoint = [gestureRecognizer locationInView:self.view];</span><br><span class="line">        CGFloat windowWidth = self.view.frame.size.width;</span><br><span class="line">        </span><br><span class="line">        //滑动开始，保存初始坐标</span><br><span class="line">        if (gestureRecognizer.state == UIGestureRecognizerStateBegan) &#123;</span><br><span class="line">            self.panGestureStartPointX = gesturePoint.x;</span><br><span class="line">            [self.backgroundView setHidden:NO];</span><br><span class="line">        &#125;</span><br><span class="line">        //滑动过程中，动态改变 menuView 位置及 backgroundView 透明度</span><br><span class="line">        else if (gestureRecognizer.state != UIGestureRecognizerStateEnded) &#123;</span><br><span class="line">            CGFloat deltaX = 0;</span><br><span class="line">            </span><br><span class="line">            //计算手指相对起始位置的滑动距离</span><br><span class="line">            deltaX = (gestureRecognizer.edges == UIRectEdgeLeft) ?</span><br><span class="line">                    (gesturePoint.x - self.panGestureStartPointX) : (self.panGestureStartPointX - gesturePoint.x);</span><br><span class="line">            </span><br><span class="line">            //如果滑动距离是负数，则说明手指滑动方向与侧栏弹出反向相反，无需处理</span><br><span class="line">            if (deltaX &gt; 0.0) &#123;</span><br><span class="line">                CGFloat newPointX = 0.0;</span><br><span class="line">                CGFloat newBgAlpha = 0.0;</span><br><span class="line">                UIView *menuView = nil;</span><br><span class="line">                </span><br><span class="line">                if (gestureRecognizer.edges == UIRectEdgeLeft) &#123;</span><br><span class="line">                    newPointX = -windowWidth + deltaX;</span><br><span class="line">                    newBgAlpha = (newPointX + windowWidth) / windowWidth * self.bgViewFinalAlpha;</span><br><span class="line">                    menuView = self.leftMenuContainerView;</span><br><span class="line">                &#125;</span><br><span class="line">                else &#123;</span><br><span class="line">                    newPointX = windowWidth - deltaX;</span><br><span class="line">                    newBgAlpha = (windowWidth - newPointX) / windowWidth * self.bgViewFinalAlpha;</span><br><span class="line">                    menuView = self.rightMenuContainerView;</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">                //更新 menuView 显示位置</span><br><span class="line">                [menuView setFrame:CGRectMake(newPointX, menuView.frame.origin.y, menuView.frame.size.width, menuView.frame.size.height)];</span><br><span class="line">                //更新 backgroundView 透明度</span><br><span class="line">                [self.backgroundView setAlpha:newBgAlpha];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //滑动结束后，判断该弹出还是收回 menuView</span><br><span class="line">        else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) &#123;</span><br><span class="line">            //计算 menuView 的最终位移</span><br><span class="line">            CGFloat viewOffset = (gestureRecognizer.edges == UIRectEdgeLeft) ?</span><br><span class="line">                                (self.leftMenuContainerView.frame.origin.x + windowWidth) : (windowWidth - self.rightMenuContainerView.frame.origin.x);</span><br><span class="line">            //弹出/收回侧栏</span><br><span class="line">            if (viewOffset &gt; self.minOffset) &#123;</span><br><span class="line">                (gestureRecognizer.edges == UIRectEdgeLeft) ? ([self showLeftMenu]) : ([self showRightMenu]);</span><br><span class="line">                [self showBackgroundView];</span><br><span class="line">            &#125;</span><br><span class="line">            else &#123;</span><br><span class="line">                (gestureRecognizer.edges == UIRectEdgeLeft) ? ([self dismissLeftMenu]) : ([self dismissRightMenu]);</span><br><span class="line">                [self dismissBackgroundView];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当 <code>LeftMenuContainerView</code> 已弹出时，屏蔽右侧屏幕边缘滑入手势捕捉，收回后重新开启；同理，<code>RightMenuContainerView</code> 弹出后，屏蔽左侧屏幕边缘滑入手势捕捉，收回后重新开启</li>
+</ul>
+<p>使用 <code>addGestureRecognizer</code> 和 <code>removeGestureRecognizer</code> ，在弹出/收回侧栏时对手势捕捉进行使能/禁止</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (void)enableEdgePanGestureRecognizer &#123;</span><br><span class="line">    [self.view addGestureRecognizer:self.screenEdgePanGestureRecognizerLeft];</span><br><span class="line">    [self.view addGestureRecognizer:self.screenEdgePanGestureRecognizerRight];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)disableEdgePanGestureRecognizer &#123;</span><br><span class="line">    [self.view removeGestureRecognizer:self.screenEdgePanGestureRecognizerLeft];</span><br><span class="line">    [self.view removeGestureRecognizer:self.screenEdgePanGestureRecognizerRight];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)showLeftMenu &#123;</span><br><span class="line">    [self showMenu:self.leftMenuContainerView menuType:MENU_TYPE_LEFT_MENU];</span><br><span class="line">    [self disableEdgePanGestureRecognizer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dismissLeftMenu &#123;</span><br><span class="line">    [self dismissMenu:self.leftMenuContainerView menuType:MENU_TYPE_LEFT_MENU];</span><br><span class="line">    [self enableEdgePanGestureRecognizer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)showRightMenu &#123;</span><br><span class="line">    [self showMenu:self.rightMenuContainerView menuType:MENU_TYPE_RIGHT_MENU];</span><br><span class="line">    [self disableEdgePanGestureRecognizer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dismissRightMenu &#123;</span><br><span class="line">    [self dismissMenu:self.rightMenuContainerView menuType:MENU_TYPE_RIGHT_MENU];</span><br><span class="line">    [self enableEdgePanGestureRecognizer];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-6-MainViewController"><a href="#2-6-MainViewController" class="headerlink" title="2.6 MainViewController"></a>2.6 <code>MainViewController</code></h3><p><code>MainViewController</code> 只做两件事情，「通知」<code>ContainersViewController</code> 弹出/收回 <code>LeftMenuContainerView</code>/<code>RightMenuContainerView</code></p>
+<h4 id="2-6-1-storyboard-实现"><a href="#2-6-1-storyboard-实现" class="headerlink" title="2.6.1 storyboard 实现"></a>2.6.1 <code>storyboard</code> 实现</h4><p>添加 <code>LeftMenu</code> 和 <code>RightMenu</code> 两个 <code>Bar Button Item</code> 到 <code>Navigation Bar</code> ，并将 <code>Button Action</code> 关联到 <code>MainViewController</code> 中。</p>
+<center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_main_view_controller.jpeg" width="50%" height="50%"><br><br>Figure 2.4 : <code>MainViewController</code> 页面<br></center>
+
+<h4 id="2-6-2-代码实现"><a href="#2-6-2-代码实现" class="headerlink" title="2.6.2 代码实现"></a>2.6.2 代码实现</h4><p>在章节 2.4 中提到，本 demo 中「通知」的方式使用的是函数调用，所以在 <code>MainViewController</code> 中，当用户点击 <code>LeftMenu</code> 和 <code>RightMenu</code> Button时，需要通过调用 <code>ContainersViewController</code> 暴露出来的函数实现左右侧栏的显示。</p>
+<p>从 <code>storyboard</code> 中可知， <code>self.parentViewController</code> 获取到的是 <code>navigationController</code> ，<code>self.parentViewController.parentViewController</code> 获取到的便是 <code>ContainersViewController</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    self.containerViewController = (ContainerViewController *) self.parentViewController.parentViewController;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)leftMenuButtonAction:(UIBarButtonItem *)sender &#123;</span><br><span class="line">    [self.containerViewController showLeftMenu];</span><br><span class="line">    [self.containerViewController showBackgroundView];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (IBAction)rightMenuButtonAction:(UIBarButtonItem *)sender &#123;</span><br><span class="line">    [self.containerViewController showRightMenu];</span><br><span class="line">    [self.containerViewController showBackgroundView];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-6-3-LeftMenuViewController"><a href="#2-6-3-LeftMenuViewController" class="headerlink" title="2.6.3 LeftMenuViewController"></a>2.6.3 <code>LeftMenuViewController</code></h3><ul>
+<li><p><code>View</code> 的右侧设置一个全透明的 <code>transparentView</code> ，用于「透视」 <code>ContainersViewController</code> 上的 <code>backgroundView</code></p>
+<p><center><br><img src="http://7xra14.com1.z0.glb.clouddn.com/StoryboardSlider_left_menu_view" width="50%" height="50%"></center></p>
+</li>
+</ul>
+<p>Figure 2.5 : <code>LeftMenuViewController</code> 页面<br></p>
+<ul>
+<li>点击右侧的 <code>transparentView</code>，「通知」 <code>ContainersViewController</code> 收回左侧栏；点击 <code>LeftMenuViewController</code> 上的「项目」，「通知」 <code>ContainersViewController</code> 收回左侧栏</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidAppear:(BOOL)animated &#123;</span><br><span class="line">    [super viewDidAppear:animated];</span><br><span class="line">    </span><br><span class="line">    self.containerViewController = (ContainerViewController *)self.parentViewController;</span><br><span class="line">    </span><br><span class="line">    [self gestureRecognizerInitial];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)didReceiveMemoryWarning &#123;</span><br><span class="line">    [super didReceiveMemoryWarning];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)gestureRecognizerInitial &#123;</span><br><span class="line">    UITapGestureRecognizer *transparentViewTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(transparentViewTapHandler:)];</span><br><span class="line">    </span><br><span class="line">    [self.transparentView addGestureRecognizer:transparentViewTapGestureRecognizer];</span><br><span class="line">    </span><br><span class="line">    UITapGestureRecognizer *bookViewTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(transparentViewTapHandler:)];</span><br><span class="line">    [self.booksView addGestureRecognizer:bookViewTapGestureRecognizer];</span><br><span class="line">    </span><br><span class="line">    UITapGestureRecognizer *tagViewTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(transparentViewTapHandler:)];</span><br><span class="line">    [self.tagView addGestureRecognizer:tagViewTapGestureRecognizer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)transparentViewTapHandler:(UITapGestureRecognizer *)gestureRecognizer &#123;</span><br><span class="line">    [self.containerViewController dismissLeftMenu];</span><br><span class="line">    [self.containerViewController dismissBackgroundView];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>捕捉滑动手势，<code>LeftMenuViewController</code> 随手势在 x 轴上平移，松手时判断需恢复到弹出状态，还是通知 <code>ContainersViewController</code> 收回左侧栏</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">- (void)gestureRecognizerInitial &#123;</span><br><span class="line">    ......</span><br><span class="line">    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognizerHandler:)];</span><br><span class="line">    [self.view addGestureRecognizer:panGestureRecognizer];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)panGestureRecognizerHandler:(UIPanGestureRecognizer *)gestureRecognizer &#123;</span><br><span class="line">    //获取手指相对于屏幕的坐标</span><br><span class="line">    CGPoint gesturePoint = [gestureRecognizer locationInView:self.containerViewController.view];</span><br><span class="line">    CGFloat windowWidth = self.containerViewController.view.frame.size.width;</span><br><span class="line">    </span><br><span class="line">    //滑动开始，保存初始坐标</span><br><span class="line">    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) &#123;</span><br><span class="line">        self.panGestureStartPointX = gesturePoint.x;</span><br><span class="line">    &#125;</span><br><span class="line">    //滑动过程中，动态改变 menuView 位置及 backgroundView 透明度</span><br><span class="line">    else if (gestureRecognizer.state != UIGestureRecognizerStateEnded) &#123;</span><br><span class="line">        CGFloat deltaX = 0;</span><br><span class="line">        </span><br><span class="line">        //计算手指相对起始位置的滑动距离</span><br><span class="line">        deltaX = self.panGestureStartPointX - gesturePoint.x;</span><br><span class="line">        </span><br><span class="line">        //如果滑动距离是负数，则说明手指滑动方向与侧栏回收方向相反，无需处理</span><br><span class="line">        if (deltaX &gt; 0.0) &#123;</span><br><span class="line">            CGFloat newPointX = 0.0;</span><br><span class="line">            CGFloat newBgAlpha = 0.0;</span><br><span class="line">            CGFloat bgViewFinalAlpha = [self.containerViewController getBgViewFinalAlphaValue];</span><br><span class="line">            </span><br><span class="line">            newPointX = -deltaX;</span><br><span class="line">            newBgAlpha = (newPointX + windowWidth) / windowWidth * bgViewFinalAlpha;</span><br><span class="line">            </span><br><span class="line">            //更新 menuView 显示位置</span><br><span class="line">            CGRect newFrame = CGRectMake(newPointX, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);</span><br><span class="line">            [self.containerViewController modifyMenuViewFrame:newFrame menuType:MENU_TYPE_LEFT_MENU];</span><br><span class="line">            //更新 backgroundView 透明度</span><br><span class="line">            [self.containerViewController modifyBackgroundViewAlpha:newBgAlpha];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //滑动结束后，判断该弹出还是收回 menuView</span><br><span class="line">    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) &#123;</span><br><span class="line">        CGFloat minOffset = [self.containerViewController getMinOffset];</span><br><span class="line">        //计算 menuView 的最终位移</span><br><span class="line">        CGFloat viewOffset = -self.containerViewController.leftMenuContainerView.frame.origin.x;</span><br><span class="line">        //弹出/收回侧栏</span><br><span class="line">        if (viewOffset &gt; minOffset) &#123;</span><br><span class="line">            [self.containerViewController dismissLeftMenu];</span><br><span class="line">            [self.containerViewController dismissBackgroundView];</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            [self.containerViewController showLeftMenu];</span><br><span class="line">            [self.containerViewController showBackgroundView];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-6-4-RightMenuViewController"><a href="#2-6-4-RightMenuViewController" class="headerlink" title="2.6.4 RightMenuViewController"></a>2.6.4 <code>RightMenuViewController</code></h3><p>实现方式与 LeftMenuViewController 相同，只是在拖拽手势处理时坐标计算有少许变化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">- (void)panGestureRecognizerHandler:(UIPanGestureRecognizer *)gestureRecognizer &#123;</span><br><span class="line">    //获取手指相对于屏幕的坐标</span><br><span class="line">    CGPoint gesturePoint = [gestureRecognizer locationInView:self.containerViewController.view];</span><br><span class="line">    CGFloat windowWidth = self.containerViewController.view.frame.size.width;</span><br><span class="line">    </span><br><span class="line">    //滑动开始，保存初始坐标</span><br><span class="line">    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) &#123;</span><br><span class="line">        self.panGestureStartPointX = gesturePoint.x;</span><br><span class="line">    &#125;</span><br><span class="line">    //滑动过程中，动态改变 menuView 位置及 backgroundView 透明度</span><br><span class="line">    else if (gestureRecognizer.state != UIGestureRecognizerStateEnded) &#123;</span><br><span class="line">        CGFloat deltaX = 0;</span><br><span class="line">        </span><br><span class="line">        //计算手指相对起始位置的滑动距离</span><br><span class="line">        deltaX = gesturePoint.x - self.panGestureStartPointX;</span><br><span class="line">        </span><br><span class="line">        //如果滑动距离是负数，则说明手指滑动方向与侧栏回收方向相反，无需处理</span><br><span class="line">        if (deltaX &gt; 0.0) &#123;</span><br><span class="line">            CGFloat newPointX = 0.0;</span><br><span class="line">            CGFloat newBgAlpha = 0.0;</span><br><span class="line">            CGFloat bgViewFinalAlpha = [self.containerViewController getBgViewFinalAlphaValue];</span><br><span class="line">            </span><br><span class="line">            newPointX =  deltaX;</span><br><span class="line">            newBgAlpha = (windowWidth - newPointX) / windowWidth * bgViewFinalAlpha;</span><br><span class="line">            </span><br><span class="line">            //更新 menuView 显示位置</span><br><span class="line">            CGRect newFrame = CGRectMake(newPointX, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);</span><br><span class="line">            [self.containerViewController modifyMenuViewFrame:newFrame menuType:MENU_TYPE_RIGHT_MENU];</span><br><span class="line">            //更新 backgroundView 透明度</span><br><span class="line">            [self.containerViewController modifyBackgroundViewAlpha:newBgAlpha];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //滑动结束后，判断该弹出还是收回 menuView</span><br><span class="line">    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) &#123;</span><br><span class="line">        CGFloat minOffset = [self.containerViewController getMinOffset];</span><br><span class="line">        //计算 menuView 的最终位移</span><br><span class="line">        CGFloat viewOffset = self.containerViewController.rightMenuContainerView.frame.origin.x;</span><br><span class="line">        //弹出/收回侧栏</span><br><span class="line">        if (viewOffset &gt; minOffset) &#123;</span><br><span class="line">            [self.containerViewController dismissRightMenu];</span><br><span class="line">            [self.containerViewController dismissBackgroundView];</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            [self.containerViewController showRightMenu];</span><br><span class="line">            [self.containerViewController showBackgroundView];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写了这么多，终于接近尾声！</p>
+<h1 id="3-坑！"><a href="#3-坑！" class="headerlink" title="3. 坑！"></a>3. 坑！</h1><ul>
+<li><p>章节 2.6.3 &amp; 2.6.4，为何要在 <code>MenuViewController</code> 中设计 <code>transparentView</code> 用于「透视」<code>ContainersViewController</code> 的黑色半透明背景，而不直接将 <code>MenuContainerView</code> 的宽度固定为有效内容宽度，而非全屏幕？</p>
+<ul>
+<li>假设 <code>MenuViewController</code> 宽度不是全屏幕，但使用了 <code>NavigationController</code> ，在调用 <code>pushViewController</code> 后，新页面宽度将和 <code>MenuViewController</code> 一致，不能全屏显示。所以这个地方的实现逻辑需要根据项目实际需求修改。</li>
+</ul>
+</li>
+<li><p>若 <code>MainViewController</code> 中存在 <code>Scroll View</code>，屏幕边缘滑入不能触发侧栏打开</p>
+<ul>
+<li>在 <code>MainViewController</code> 中调用下述代码，让 <code>ContainersViewController</code> 的手势优先级更高<br><code>[self.scrollView.panGestureRecognizer requireGestureRecognizerToFail:self.containersViewController.screenEdgePanGesture];</code></li>
+</ul>
+</li>
+<li><p>若 <code>MainViewController</code> ，<code>LeftMenuViewController</code> 或 <code>RightMenuViewController</code> 存在页面跳转，在跳转后必须禁止 <code>ContainersViewController</code> 的 <code>UIScreenEdgePanGestureRecognizer</code> ，否则页面跳转后仍能通过屏幕边缘滑入手势弹出侧栏</p>
+</li>
+<li>如需要同时使用 <code>TabBarController</code> ，只需在 <code>MainViewController</code> 的 <code>NavigationController</code> 前添加一个 <code>TabBarController</code> 即可</li>
+</ul>
+<h1 id="4-写在最后"><a href="#4-写在最后" class="headerlink" title="4. 写在最后"></a>4. 写在最后</h1><p>对于虽说侧栏只是一个很旧的，甚至不被苹果提倡的功能，不过通过这次「造」轮子，也算比较深入地了解了 <code>Container View</code> ，获益匪浅。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/06/iOS — 使用 Container View 实现左右侧栏/" data-id="cjg31vbqx000jwitpz6q7fh8i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS开发/">iOS开发</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/06/iOS — Slider with Container View/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS —— 使用 Container View 实现左右侧栏
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/17/iOS-Architecture-Patterns/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IOS技术/">IOS技术</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS技术/">iOS技术</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客搭建/">博客搭建</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术文档翻译/">技术文档翻译</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOS开发/">IOS开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS开发/">iOS开发</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/IOS开发/" style="font-size: 10px;">IOS开发</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/iOS开发/" style="font-size: 20px;">iOS开发</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/17/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/13/vue+koa2+mySQL+Ngnix框架搭建备忘/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/06/iOS — Slider with Container View/">iOS —— 使用 Container View 实现左右侧栏</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/">iOS —— 使用 Container View 实现左右侧栏</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/17/iOS-Architecture-Patterns/">iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

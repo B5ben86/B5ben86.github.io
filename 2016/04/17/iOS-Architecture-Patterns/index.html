@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原文：iOS Architecture Patterns - Demystifying MVC, MVP, MVVM and VIPER 作者：Bohdan Orlov 译者：Chamchamben   更新：在这可以下载到NSLondon里面的Sliders代码 在开发过程中，是否觉得iOS的MVC软件架构很怪异？不知道如何切换到MVVM软件架构？有听说过VIPER架构，但是不知道是否值得一试">
+<meta name="keywords" content="Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」">
+<meta property="og:url" content="http://yoursite.com/2016/04/17/iOS-Architecture-Patterns/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="原文：iOS Architecture Patterns - Demystifying MVC, MVP, MVVM and VIPER 作者：Bohdan Orlov 译者：Chamchamben   更新：在这可以下载到NSLondon里面的Sliders代码 在开发过程中，是否觉得iOS的MVC软件架构很怪异？不知道如何切换到MVVM软件架构？有听说过VIPER架构，但是不知道是否值得一试">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%841.jpeg">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%842.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%843.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%844.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%845.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%846.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%847.jpeg">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%848.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%849.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%8410.png">
+<meta property="og:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%8411.png">
+<meta property="og:updated_time" content="2016-04-29T11:16:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」">
+<meta name="twitter:description" content="原文：iOS Architecture Patterns - Demystifying MVC, MVP, MVVM and VIPER 作者：Bohdan Orlov 译者：Chamchamben   更新：在这可以下载到NSLondon里面的Sliders代码 在开发过程中，是否觉得iOS的MVC软件架构很怪异？不知道如何切换到MVVM软件架构？有听说过VIPER架构，但是不知道是否值得一试">
+<meta name="twitter:image" content="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%841.jpeg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-iOS-Architecture-Patterns" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/17/iOS-Architecture-Patterns/" class="article-date">
+  <time datetime="2016-04-17T00:46:18.000Z" itemprop="datePublished">2016-04-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>原文：<a href="https://medium.com/ios-os-x-development/ios-architecture-patterns-ecba4c38de52#.d6lwj5173" target="_blank" rel="noopener">iOS Architecture Patterns - Demystifying MVC, MVP, MVVM and VIPER</a></li>
+<li>作者：<a href="https://medium.com/@borlov" target="_blank" rel="noopener">Bohdan Orlov</a></li>
+<li>译者：<a href="http://chamchamben.com" target="_blank" rel="noopener">Chamchamben</a></li>
+</ul>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%841.jpeg" alt=""></p>
+<p><em>更新：<a href="http://slides.com/borlov/arch/fullscreen" target="_blank" rel="noopener">在这</a>可以下载到<code>NSLondon</code>里面的<code>Sliders</code>代码</em></p>
+<p>在开发过程中，是否觉得iOS的MVC软件架构很怪异？不知道如何切换到MVVM软件架构？有听说过VIPER架构，但是不知道是否值得一试？</p>
+<p>继续往下读，你会找到上述问题的答案，如果找不到 —— 欢迎留言。</p>
+<p>本文中，你将了解到关于iOS开发中会用到的软件架构知识。我们会通过理论分析及小练习来评估几个流行的iOS软件架构。如果希望详细了解某些特定知识点，可以点击附带的链接。</p>
+<p><em>掌控软件架构，是会让人上瘾的，因此，请留意：看完本文后，你可能会比看之前提出更多问题，例如：</em></p>
+<p><em>应该由哪个模块来处理网络请求？Model 还是 Controller？</em></p>
+<p><em>如何将 Model 的数据「传入」一个 View 的 View Model？</em><br><em>应该由谁来创建新的 VIPER：Router 还是 Presenter？</em></p>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%842.png" alt=""></p>
+<a id="more"></a>
+<h1 id="谁会关心选用哪种软件架构？"><a href="#谁会关心选用哪种软件架构？" class="headerlink" title="谁会关心选用哪种软件架构？"></a>谁会关心选用哪种软件架构？</h1><p>如果不使用合适的软件架构，那么终会有一天，你需要调试一个非常庞大，包含了众多业务逻辑的类，那时你就会发现自己根本无从下手。通常来说，开发者无法记住一个庞大的类的所有业务逻辑，因此在分析过程中，往往会因为类的内容过多而忽略掉很多重要的细节。如果你的代码已经遇到这样的问题，那么通常会是这样：</p>
+<ul>
+<li>这个庞大的类继承了 <code>UIViewController</code></li>
+<li>你的数据直接定义在 <code>UIViewController</code>中</li>
+<li><code>UIView</code>中几乎没有处理任何业务逻辑</li>
+<li>Model 是一个笨重的数据结构</li>
+<li>单元测试代码覆盖不了任何业务</li>
+</ul>
+<p>尽管你完全按照 Apple 的开发指导，并实现了 <a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html" target="_blank" rel="noopener">Apple的MVC架构</a>，上述问题依然会出现。不过，问题并非出在你的身上，而是出在苹果的MVC架构上，后续我们会继续分析这个问题。</p>
+<p>我们先来定义什么是好的软件架构：</p>
+<ol>
+<li>软件架构上具有明确的分工，各个模块的功能职责平衡分配，且明确。</li>
+<li>良好的可测试性，通常良好的软件架构都具备良好的可测试性。</li>
+<li>良好的易用性，维护成本低。</li>
+</ol>
+<h2 id="为什么需要模块分工？"><a href="#为什么需要模块分工？" class="headerlink" title="为什么需要模块分工？"></a><em>为什么需要模块分工？</em></h2><p>良好的模块分工，可以大大简化我们对代码的理解难度。虽然通过大量的开发工作，可以训练我们的大脑去分析越来越复杂的逻辑，但是人总有极限，而且简单的逻辑更容易理解、不容易出错，所以，遵循<a href="https://en.wikipedia.org/wiki/Single_responsibility_principle" target="_blank" rel="noopener">单一职责原则</a>，将复杂的业务逻辑分解。</p>
+<h2 id="为什么需要良好的可测试性？"><a href="#为什么需要良好的可测试性？" class="headerlink" title="为什么需要良好的可测试性？"></a><em>为什么需要良好的可测试性？</em></h2><p>对于深知单元测试好处的开发者来说，这并不是一个问题。单元测试可以大大地减少程序运行时才能发现的问题，这通常可以节省「用户反馈」-&gt;「Bug修复」-&gt;「新版本发布」-&gt;「用户安装新版本」这个<a href="http://appreviewtimes.com/" target="_blank" rel="noopener">耗时长达一周以上</a>的过程。所以，程序的可测试性对于程序的稳定性是异常重要的。</p>
+<h2 id="为什么需要良好的易用性？"><a href="#为什么需要良好的易用性？" class="headerlink" title="为什么需要良好的易用性？"></a><em>为什么需要良好的易用性？</em></h2><p>毋庸置疑，最好的代码是还没被写出来的代码。因此，越少的代码，意味着越少的 bugs。这也意味着尽量以最少的代码实现相同的功能，并非意味着这个开发者懒惰，同时，也不能不看维护成本而盲目赞同一个看似聪明的方案。</p>
+<h1 id="MV-X-基础"><a href="#MV-X-基础" class="headerlink" title="MV(X)基础"></a>MV(X)基础</h1><p>现今，我们有几种比较流行的软件架构</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="noopener">MVC</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter" target="_blank" rel="noopener">MVP</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Model_View_ViewModel" target="_blank" rel="noopener">MVVM</a></li>
+<li><a href="https://www.objc.io/issues/13-architecture/viper/" target="_blank" rel="noopener">VIPER</a></li>
+</ul>
+<p>前三种架构都将app分成三部分：</p>
+<ul>
+<li>Models —— 负责数据处理及数据访问，类似 <code>Person</code> 和 <code>PersonDataProvider</code> 类</li>
+<li>Views —— 页面展示层（GUI），在iOS中，所有 <code>ui</code> 前缀的都属于 View</li>
+<li>Controller/Presenter/ViewModel —— 在 Model 和 View之间充当通讯媒介，通常负责两方面，一方面当接收到 View 的动作通知时改变 Model，一方面当接收到 Model 的数据变化通知时改变 View 的显示。</li>
+</ul>
+<p>将app从架构上分成三部分有利于我们：</p>
+<ul>
+<li>更好地理解各部分的功能职责，模块间耦合度低</li>
+<li>更好的复用（通常 View 和 Model 可复用）</li>
+<li>更好的可测试性，可对每个部分进行独立测试</li>
+</ul>
+<p>我们先从 MV(X) 架构开始分析，然后再于 VIPER 进行对比。</p>
+<h2 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h2><p><em>如何使用</em></p>
+<p>在开始讨论 Apple 版本的 MVC 架构前，我们先看看<a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller" target="_blank" rel="noopener">最初的 MVC 架构</a>。</p>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%843.png" alt=""></p>
+<p>这个框架中，View 并非独立，在 Model 被修改时，View 只是简单地被 Controller 修改。其逻辑与网页更新过程类似：当用户输入网址并回车后，网页被重新加载，并显示远端服务器的内容。虽然我们可以在 iOS 中尝试实现传统 MVC 结构的 App，但由于此架构有一个明显的缺陷 —— 三个部分之间的耦合度非常高，每个部分都必须知道其他部分的具体接口与内容。这大大降低了代码的可重用性 —— 这不是大家希望在程序中使用的方式。因此，我们直接进入下一环节。</p>
+<p><em>传统的 MVC 架构并不适用于现代的 iOS 开发。</em></p>
+<h2 id="Apple-的-MVC"><a href="#Apple-的-MVC" class="headerlink" title="Apple 的 MVC"></a>Apple 的 MVC</h2><p><em>预期效果</em><br><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%844.png" alt=""></p>
+<p>上图中可以看出，Controller 在 View 和 Model 中充当着「桥梁」的角色，View 和 Model 相互独立，不需要知道任何对方的细节。虽然 Controller 的复用性很差，不过也可以接受，毕竟很多复杂的业务逻辑是不能放在 Model 里，因此也只能放到 Controller 里的。</p>
+<p>理论上整个框架简单明了，不过你是否已经发现一些端倪了？有人说，MVC 可以翻译为 笨重的 View Controller『译者注：原文是 Massive View Controller』。此外，view controller 的瘦身也成了iOS开发者的一大难题。为什么在经过 Apple 改进的 MVC 架构中会出现这样的问题呢？</p>
+<h2 id="Apple-的-MVC-1"><a href="#Apple-的-MVC-1" class="headerlink" title="Apple 的 MVC"></a>Apple 的 MVC</h2><p><em>实际效果</em><br><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%845.png" alt=""></p>
+<p>在Cocoa MVC 中，由于 View 的生命周期，View 和 Controller 基本上绑定在一起，因此开发者也只能编写臃肿的 View Controllers 代码。虽然你已经把一部分业务逻辑和数据修改操作挪到了 Model 层，但如果想对 View 进行瘦身就没那么容易了，大部分时间 View 的职责是向 Controller 发送 action。最终，Controller 会是一个到处都是 delegate，一个臃肿的包含所有变量的 dataSouce，而且通常还需要兼顾异步网络通讯的操作，还有…凡事你想到的，基本都出现会在 Controller 中。</p>
+<p>下面的代码是否似曾相似：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var userCell = tableView.dequeneRusableCellWithIdentifier(&quot;identifier&quot;) as UserCell</span><br><span class="line">userCell.configureWithUser(user)</span><br></pre></td></tr></table></figure>
+<p>在此，本应该属于 View 的 cell 直接使用 Model进行配置，换言之， MVC 架构被打破了（MVC 中 View 与 Model 不应该直接通讯），但在iOS开发中，这种情况经常出现，而且开发者不会觉得这样有任何问题。如果开发者在开发过程中严格遵循 MVC 架构，那么他们需要额外设计代码，把 cell 配置挪到 controller 中，避免将 Model 传递到 View 中，这将会导致本来臃肿的 Controller 愈发臃肿。</p>
+<p><code>Cocoa MVC 完全就是 Massive View Controller 的缩写。</code></p>
+<p>这样的架构导致的问题在开发时可能不明显，但一旦到了<a href="http://nshipster.com/unit-testing/" target="_blank" rel="noopener">单元测试</a>阶段（希望你的工程有单元测试），问题将会暴露无遗。由于你工程中的 View controller 和 View 关系紧密，设计测试用例时必须遍历 View 显示时的所有情况，同时需要考虑 View 的生命周期，这使得高覆盖率的测试变得非常困难。</p>
+<p>下面我们来看一个运行在 playground 下的例子：『译者注：在遵循原版的基础上，译者对代码进行了少许改善。运行环境「Xcode Version 7.3 (7D175)」』</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">import UIKit</span><br><span class="line">import XCPlayground</span><br><span class="line"></span><br><span class="line">struct Person &#123;  //Model</span><br><span class="line">    let firstName: String</span><br><span class="line">    let lastName: String</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class GreetingViewController: UIViewController &#123; // View + Controller</span><br><span class="line">    var person: Person!</span><br><span class="line">    let showGreetingButton = UIButton();</span><br><span class="line">    let greetingLabel = UILabel();</span><br><span class="line">    </span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad()</span><br><span class="line">        self.showGreetingButton.addTarget(self, action: #selector(GreetingViewController.didTapButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)</span><br><span class="line">        </span><br><span class="line">        viewLayoutInitial()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func didTapButton(button : UIButton!) &#123;</span><br><span class="line">        let greeting = &quot;Hello&quot; + &quot; &quot; + self.person.firstName + &quot; &quot; + self.person.lastName</span><br><span class="line">        self.greetingLabel.text = greeting</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func viewLayoutInitial() -&gt; () &#123;</span><br><span class="line">        self.view.frame = CGRect(x: 0, y: 0, width: 320, height: 480)</span><br><span class="line">        self.view.backgroundColor = UIColor(white: 1.0, alpha: 1.0);</span><br><span class="line">        </span><br><span class="line">        self.showGreetingButton.frame = CGRect(x: 10.0, y: 10.0, width: 90.0, height: 30.0)</span><br><span class="line">        self.showGreetingButton.layer.cornerRadius = 6.0</span><br><span class="line">        self.showGreetingButton.backgroundColor = UIColor.blueColor()</span><br><span class="line">        </span><br><span class="line">        self.greetingLabel.frame = CGRect(x: 10.0, y: 60.0, width: 200.0, height: 20.0)</span><br><span class="line">        self.greetingLabel.textColor = UIColor.blueColor()</span><br><span class="line">        self.greetingLabel.text = &quot;Say hello to who?&quot;</span><br><span class="line">        </span><br><span class="line">        self.view.addSubview(self.showGreetingButton);</span><br><span class="line">        self.view.addSubview(self.greetingLabel);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Assembing of MVC</span><br><span class="line">let model = Person(firstName: &quot;David&quot;, lastName: &quot;Blaine&quot;)</span><br><span class="line">let view = GreetingViewController()</span><br><span class="line">view.person = model</span><br><span class="line"></span><br><span class="line">XCPlaygroundPage.currentPage.liveView = view.view</span><br></pre></td></tr></table></figure>
+<p><code>MVC 架构存在于现在的 view controller 中</code></p>
+<p>上述例子是否不大容易测试？虽然我们可以通过新建 GreetingModel 类并将 greeting 字符串的生成代码放到该类中来实现该部分代码的独立测试，但如果不调用 <code>viewDidLoad</code> <code>didTapButton</code> 方法，我们很多对 GreetingViewController 中 view 的显示逻辑（虽然上述例子没多少显示逻辑）进行测试。这也意味着在项目单元测试中，我们需要加载所有的 view，这对于单元测试来说是很糟糕的。</p>
+<p>实际上，在模拟器（例如 iPhone 4S）上运行所有的 UIViews 并不能保证工程在其他设备（例如 iPad）上能正常运行，所以我建议在 Unit Test target 配置中删除 Host Application，直接对代码进行单元测试。</p>
+<p>值得注意的是，View 和 Controller 之间的通讯基本上是<a href="http://ashfurrow.com/blog/whats-worth-unit-testing-in-objective-c/" target="_blank" rel="noopener">不能进行单元测试的</a>。</p>
+<p>综上所述，貌似 Cocoa MVC 是一个很差的架构。不过按照文章开头的论述，我们还是从三方面对其进行分析：</p>
+<ul>
+<li>耦合度 —— View 和 Model 是互相独立的，但是 View 和 View Controller 耦合度很高。</li>
+<li>可测试性 —— 只有 Model 可以脱离实际运行环境进行单元测试。</li>
+<li>易用性 —— 相对于其他架构，代码量最少，而且大部分开发者对此架构都很熟悉，易用性良好。</li>
+</ul>
+<p>如果你不想花太多时间来选择软件架构，并且觉得稍高的维护工作量会对你的项目造成很大的影响，那么，Cocoa MVC 架构对你来说是一个不错的选择。</p>
+<h2 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h2><p><em>Cocoa MVC 希望成为的架构</em></p>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%846.png" alt=""></p>
+<p>是不是看着很像 Apple 的 MVC 架构？ 但实际上此架构的名称是<a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter" target="_blank" rel="noopener">MVP</a>(被动类型 View 的变体『译者注：原文为 Passive View variant』)。这是否意味着 Apple 的 MVC 实际上是 MVP ？ 并非如此，在 Apple 的 MVC 中，View 和 Controller 是紧密耦合的，但在 MVP 中，Presenter 与 View/View Controller 完全解耦，Presenter中没有任何与 View 布局相关的代码，View 可以很方便地进行移植。即便这样，Presenter 依旧肩负着对 View 的数据更新和动作捕捉。 </p>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%847.jpeg" alt=""></p>
+<p><strong><em>我要告诉你，UIViewController 实际上就是 View。</em></strong></p>
+<p>在 MVP 架构中，继承了 UIViewController 的子类实际上并非 Presenter ，而是单纯的 View 。这样的分类方式提供了极好的可测试性，与此同时，由于额外实现设计数据和动作之间的绑定，不可避免地会导致开发量的增加。具体例子如下『译者注：在遵循原版的基础上，译者对代码进行了少许改善。运行环境「Xcode Version 7.3 (7D175)」』：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">//: Playground - noun: a place where people can play</span><br><span class="line"></span><br><span class="line">import UIKit</span><br><span class="line">import XCPlayground</span><br><span class="line"></span><br><span class="line">struct Person &#123;     // Model</span><br><span class="line">    let firstName: String</span><br><span class="line">    let lastName: String</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol GreetingView: class &#123;</span><br><span class="line">    func setGreeting(greeting: String)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">protocol GreetingViewPresenter &#123;</span><br><span class="line">    init (view : GreetingViewController, person : Person)</span><br><span class="line">    func showGreeting()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class GreetingPresenter : GreetingViewPresenter &#123;   //Presenter</span><br><span class="line">    let view : GreetingViewController</span><br><span class="line">    var person : Person</span><br><span class="line">    </span><br><span class="line">    required init(view: GreetingViewController, person: Person) &#123;</span><br><span class="line">        self.view = view</span><br><span class="line">        self.person = person</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func showGreeting() &#123;</span><br><span class="line">        let greeting = &quot;Hello&quot; + &quot; &quot; + self.person.firstName + &quot; &quot; + self.person.lastName</span><br><span class="line">        self.view.setGreeting(greeting)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class GreetingViewController: UIViewController, GreetingView &#123;  //View</span><br><span class="line">    var presenter : GreetingPresenter!</span><br><span class="line">    let showGreetingButton = UIButton()</span><br><span class="line">    let greetingLabel = UILabel()</span><br><span class="line">    </span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        self.showGreetingButton.addTarget(self, action: #selector(GreetingViewController.didTapButton(_:)), forControlEvents: UIControlEvents.TouchUpInside)</span><br><span class="line">        </span><br><span class="line">        viewLayoutInitial()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func didTapButton(button : UIButton) &#123;</span><br><span class="line">        self.presenter .showGreeting()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func setGreeting(greeting: String) &#123;</span><br><span class="line">        self.greetingLabel.text = greeting</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func viewLayoutInitial() &#123;</span><br><span class="line">        self.view.frame = CGRect(x: 0, y: 0, width: 320, height: 480)</span><br><span class="line">        self.view.backgroundColor = UIColor(white: 1.0, alpha: 1.0);</span><br><span class="line">        </span><br><span class="line">        self.showGreetingButton.frame = CGRect(x: 10.0, y: 10.0, width: 90.0, height: 30.0)</span><br><span class="line">        self.showGreetingButton.layer.cornerRadius = 6.0</span><br><span class="line">        self.showGreetingButton.backgroundColor = UIColor.blueColor()</span><br><span class="line">        </span><br><span class="line">        self.greetingLabel.frame = CGRect(x: 10.0, y: 60.0, width: 200.0, height: 20.0)</span><br><span class="line">        self.greetingLabel.textColor = UIColor.blueColor()</span><br><span class="line">        self.greetingLabel.text = &quot;Say hello to who?&quot;</span><br><span class="line">        </span><br><span class="line">        self.view.addSubview(self.showGreetingButton);</span><br><span class="line">        self.view.addSubview(self.greetingLabel);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//Assembling of MVP</span><br><span class="line">let model = Person(firstName: &quot;David&quot;, lastName: &quot;Blaine&quot;)</span><br><span class="line">let view = GreetingViewController()</span><br><span class="line">let presenter = GreetingPresenter(view: view, person: model)</span><br><span class="line">view.presenter = presenter</span><br><span class="line"></span><br><span class="line">XCPlaygroundPage.currentPage.liveView = view.view</span><br></pre></td></tr></table></figure>
+<p><em>关于「聚合」方式的重要说明</em><br>由于含有三个完全独立的模块，MVP 是我们讨论的架构中首个暴露出模块聚合问题的架构。虽然我们不希望 View 和 Model 之间有任何直接交互，但在 View 显示时进行模块间的聚合显然是不正确的，尽管我们必须在某个地方实现聚合。例如，我们可以创建一个具有完整App生命周期的「路由服务（Router service）」，专门负责模块间的聚合以及 View 与 View 之间的切换。「聚合」问题会在 MVP 及接下来的架构中一直存在并且不得不解决。</p>
+<p>接下来我们分析一下 MVP 架构的特点：</p>
+<ul>
+<li>耦合度 —— 在此架构中， Presenter 和 Model 模块的职责功能最分明，同时具备一个被尽量简化的 View『译者注：dump的意思为：尽量简化或减少复杂的内容，另其非常容易被理解』</li>
+<li>可测试性 —— 具备非常好的可测试性，我们可以通过 View 来测试大部分业务逻辑。</li>
+<li>易用性 —— 对于我们这个没有实用性的简单例子来说，MVP 架构的代码量几乎是 MVC 的两倍，但同时，MVP 在思路上更加清晰。</li>
+</ul>
+<p><em>MVP 架构对于 iOS 开发来说意味着良好的可测试性和大量的代码</em></p>
+<h2 id="MVP-1"><a href="#MVP-1" class="headerlink" title="MVP"></a>MVP</h2><p><em>包含「绑定」和「Hooters」『译者注：原文为「With Bindings and Hooters」，此处Hooters用词比较隐晦，未想到合适的翻译方式』</em></p>
+<p>除了上述的 MVP 架构外，还有一种形式的 MVP 架构 —— Supervision Controller MVP. 这个 MVP 变体在 View 和 Model 间建立了直接的「绑定」关系，同时，Presenter（Supervising Controller）依旧负责 View 中 action 的响应以及 View 中数据的更新。</p>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%848.png" alt=""></p>
+<p>不过，此架构的耦合度比较糟糕，View 和 Model 紧密耦合。这有点类似于 Cocoa 桌面应用开发时遇到的状况。</p>
+<p>鉴于此架构的缺陷，在此我们就不举实际代码例子了。</p>
+<h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><p><em>最好的 MV(X) 架构，没有之一</em></p>
+<p><a href="https://en.wikipedia.org/wiki/Model_View_ViewModel" target="_blank" rel="noopener">MVVM</a>是目前来说最新的 MV(X) 架构，希望它的出现能很好的解决上述架构所面临的问题。</p>
+<p>从理论上分析，Model-View-ViewModel 的架构看起来非常完善。其中 View 和 Model 我们已经非常熟悉了， 而 View Model 则相当于两者之间的中间媒介。</p>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%849.png" alt=""></p>
+<p>MVVM 与 MVP 非常类似：</p>
+<ul>
+<li>在 MVVM 中，view controller 被当作 view 来处理</li>
+<li>View 和 Model 之间没有直接的联系</li>
+</ul>
+<p>除此之外，MVVM 还使用了与 Supervising version MVP 架构类似的「绑定」机制；但是，这个「绑定」并非应用于 View 和 Model 之间，而是应用于 View 和 View Model 之间。</p>
+<p>那么在 iOS 中，View Model 实际上是什么呢？从根本上说，View Model 是一个与 UIKit 无关的但负责控制 View 的显示和状态的模块。在运行过程中，View Model 监听着 Model 的变化，并根据 Model 的变化来更新自身对应的变量，同时，由于在 View 和 View Model 间设置了「绑定」，View Model 的变化也会「触发」 View 的更新。</p>
+<h3 id="绑定（Bindings）"><a href="#绑定（Bindings）" class="headerlink" title="绑定（Bindings）"></a>绑定（Bindings）</h3><p>在 MVP 架构分析的段落中，我们简短地介绍了「绑定」，在此，我们进行更深入的讨论。「绑定」来自于 OS X 开发，但在 iOS 中并没有引入相关的库。虽然在 iOS 中我们有 <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html" target="_blank" rel="noopener">KVO</a> 和 「通知（notifications）」，但就使用的便捷性来说，「绑定」还是更胜一筹。</p>
+<p>鉴于我们不希望重复造轮子，对与「绑定」的应用，我们有下面两种选择：</p>
+<ul>
+<li>基于 KVO 库设计的 <a href="https://github.com/Raizlabs/RZDataBinding" target="_blank" rel="noopener">RZDataBinding</a> 和 <a href="https://github.com/SwiftBond/Bond" target="_blank" rel="noopener">SwiftBond</a></li>
+<li>基于<a href="https://gist.github.com/JaviLorbada/4a7bd6129275ebefd5a6" target="_blank" rel="noopener">函数式编程</a>设计的库，如<a href="https://www.google.co.uk/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;cad=rja&amp;uact=8&amp;ved=0CB4QFjAAahUKEwj2l6rZv5jJAhUFUhQKHWahCKs&amp;url=https%3A%2F%2Fgithub.com%2FReactiveCocoa%2FReactiveCocoa&amp;usg=AFQjCNHM-pOkluiSuPsaVwVujCDTknVFUA&amp;sig2=54zu-ATo8vDMvtXbxZYTvQ" target="_blank" rel="noopener">ReactiveCocoa</a>, <a href="https://github.com/ReactiveX/RxSwift/" target="_blank" rel="noopener">RxSwift</a>和<a href="https://github.com/mxcl/PromiseKit" target="_blank" rel="noopener">PromiseKit</a></li>
+</ul>
+<p>实际上，如果你有听说过 MVVM —— 你会想到 ReactiveCocoa 和 vice versa. 虽然可以通过简单的「绑定」来实现 MVVM，但 ReactiveCocoa 能帮你更好地实现 MVVM.</p>
+<p>不过，关于 reactive 框架，有一个残酷的事实：能力越大，责任越大『译者注：原文为「the great power comes with the great responsibility」，估计是出自漫威「蜘蛛侠」里 Uncle Ben 说的 「with great power comes great responsibility」』。在使用 reactive 框架时，很容易把事情弄得非常复杂。换言之，一个Bug的调试可能会耗费开发者大量的调试时间，看看下面的栈使用情况就能猜到一二了。</p>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%8410.png" alt=""></p>
+<p>杀鸡焉用牛刀，对于我们简单的例子，FRF 和 KVO 都过于复杂，在此，我们可以直接在 ViewModel 中使用 <code>showGreeting</code> 函数和 <code>greetingDidChange</code> 回调函数来对 View 进行更新。例子如下：『译者注：在遵循原版的基础上，译者对代码进行了少许改善。运行环境「Xcode Version 7.3 (7D175)」』</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">import UIKit</span><br><span class="line">import XCPlayground</span><br><span class="line"></span><br><span class="line">struct Person &#123;     // Model</span><br><span class="line">    let firstName: String</span><br><span class="line">    let lastName: String</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol GreetingViewModelProtocol:class &#123;</span><br><span class="line">    var greeting:String? &#123; get &#125;</span><br><span class="line">    var greetingDidChanged:((GreetingViewModelProtocol) -&gt;())? &#123; get set &#125; //function to call when greeting did change</span><br><span class="line">    </span><br><span class="line">    init(person: Person)</span><br><span class="line">    func showGreeting()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class GreetingViewModel: GreetingViewModelProtocol &#123;</span><br><span class="line">    let person: Person</span><br><span class="line">    </span><br><span class="line">    var greeting: String? &#123;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            self.greetingDidChanged?(self)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    var greetingDidChanged: ((GreetingViewModelProtocol) -&gt; ())?</span><br><span class="line">    </span><br><span class="line">    required init(person: Person) &#123;</span><br><span class="line">        self.person = person</span><br><span class="line">        greeting = &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @objc func showGreeting() &#123;</span><br><span class="line">        self.greeting = &quot;Hello&quot; + &quot; &quot; + self.person.firstName + &quot; &quot; + self.person.lastName</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class GreetingViewController : UIViewController &#123;</span><br><span class="line">    var viewModel: GreetingViewModel! &#123;</span><br><span class="line">        didSet &#123;</span><br><span class="line">            self.viewModel.greetingDidChanged = &#123; [unowned self] viewModel in</span><br><span class="line">                self.greetingLabel.text = viewModel.greeting</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    let showGreetingButton = UIButton()</span><br><span class="line">    let greetingLabel = UILabel()</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad()</span><br><span class="line">        self.showGreetingButton.addTarget(self.viewModel, action: #selector(self.viewModel.showGreeting), forControlEvents: UIControlEvents.TouchUpInside)</span><br><span class="line">        </span><br><span class="line">        viewLayoutInitial()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // layout code goes here</span><br><span class="line">    func viewLayoutInitial() &#123;</span><br><span class="line">        self.view.frame = CGRect(x: 0, y: 0, width: 320, height: 480)</span><br><span class="line">        self.view.backgroundColor = UIColor(white: 1.0, alpha: 1.0);</span><br><span class="line">        </span><br><span class="line">        self.showGreetingButton.frame = CGRect(x: 10.0, y: 10.0, width: 90.0, height: 30.0)</span><br><span class="line">        self.showGreetingButton.layer.cornerRadius = 6.0</span><br><span class="line">        self.showGreetingButton.backgroundColor = UIColor.blueColor()</span><br><span class="line">        </span><br><span class="line">        self.greetingLabel.frame = CGRect(x: 10.0, y: 60.0, width: 200.0, height: 20.0)</span><br><span class="line">        self.greetingLabel.textColor = UIColor.blueColor()</span><br><span class="line">        self.greetingLabel.text = &quot;Say hello to who?&quot;</span><br><span class="line">        </span><br><span class="line">        self.view.addSubview(self.showGreetingButton);</span><br><span class="line">        self.view.addSubview(self.greetingLabel);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Assembling of MVVM</span><br><span class="line">let model = Person(firstName: &quot;David&quot;, lastName: &quot;Blaine&quot;)</span><br><span class="line">let viewModel = GreetingViewModel(person: model)</span><br><span class="line">let view = GreetingViewController()</span><br><span class="line">view.viewModel = viewModel</span><br><span class="line"></span><br><span class="line">XCPlaygroundPage.currentPage.liveView = view.view</span><br></pre></td></tr></table></figure>
+<p>同样的，我们按照三个标准来对 MVVM 架构进行评判：</p>
+<ul>
+<li>耦合度 —— 虽然在我们的例子中并不明显，但实际上 MVVM 中的 View 比 MVP 中的 View 具备更多的职责。在 MVVM 中 View 通过与 View Model 间的「绑定」来更新自身，而在 MVP 中，View 只是传递事件给 Presenter ，View 并不更新自身。</li>
+<li>可测试性 —— 鉴于View Model 对 View 一无所知，我们可以很容易地对 View Model 进行单独测试。虽然 View 同样可以做单元测试，但需要遍历所有页面。</li>
+<li>易用性 —— 与 MVP 架构相比，MVVM 具备几乎一样的代码量，但在实际项目中，若使用 MVP 架构，你需要传递所有 View 上的事件到 Presenter，同时在 Presenter 中手动更新 View ，而 MVVM 则不需要这样的操作，所以实际使用中 MVVM 会比 MVP 轻巧很多。</li>
+</ul>
+<p><em>MVVM 架构非常诱人，它不仅包含了上述优点，同时由于「绑定」的机制，开发者不需要为更新 View 写额外的代码。除此之外，可测试性也是良好的。</em></p>
+<h2 id="VIPER"><a href="#VIPER" class="headerlink" title="VIPER"></a>VIPER</h2><p><em>乐高建筑的理念移植到 iOS app 架构设计中</em></p>
+<p><a href="https://www.objc.io/issues/13-architecture/viper/" target="_blank" rel="noopener">VIPER</a>作为我们最后一个候选架构，同时也是最有趣的架构。</p>
+<p>VIPER 在任务职责分层上是极好的，为了更好的进行职责分配，VIPER 增加了 Interation 层，至此，VIPER 总共有5个分层。</p>
+<p><img src="http://7xra14.com1.z0.glb.clouddn.com/iOS%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%8411.png" alt=""></p>
+<ul>
+<li>Interactor —— 主要负责与数据或网络相关的业务逻辑，例如创建 entity 的实例，从服务器获取数据等。在实现 Interactor 的过程中你可能会使用一些 Service 或 Managers ，这些并不能认为是 VIPER 的一部分，只能说是一些外部依赖。</li>
+<li>Presenter —— 主要负责 UI 相关的业务逻辑，和调用/触发 Interactor 上的接口。</li>
+<li>Entities —— 纯数据对象，不包含对象访问层级，对象访问的逻辑归 Interactor 管理。</li>
+<li>Router —— 主要负责 VIPER 各个模块之间的数据传递工作。</li>
+</ul>
+<p>通常来说，VIPER 可以是一个页面，或者整个 app，至于具体怎么设计，完全取决于你。</p>
+<p>如果与 MV(X) 的软件架构进行对比，我们会发现职能分配上的一些不同：</p>
+<ul>
+<li>Model(data interaction) 数据处理逻辑转移到了 Interactor 模块，Entities 成为一个纯粹的数据结构。</li>
+<li>将 Controller/Presenter/ViewModel 中只与 UI 相关的功能转移到 Presenter 中，UI 中的数据处理依然保留在原来的模块中。</li>
+<li>VIPER 是第一个明确定义了负责页面跳转逻辑处理层级的架构，该层级为 Router.</li>
+</ul>
+<p><em>在 iOS中，处理 Router 是一件非常困难的事情，但 MV(X) 架构中不存在这个问题</em></p>
+<p>下面的例子不包含 routing 和 interaction 模块。『译者注：在遵循原版的基础上，译者对代码进行了少许改善。运行环境「Xcode Version 7.3 (7D175)」』</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">import UIKit</span><br><span class="line">import XCPlayground</span><br><span class="line"></span><br><span class="line">struct Person &#123; // Entity (usually more complex e.g. NSManagedObject)</span><br><span class="line">    let firstName: String</span><br><span class="line">    let lastName: String</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct GreetingData &#123; // Transport data structure (not Entity)</span><br><span class="line">    let greeting: String</span><br><span class="line">    let subject: String</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol GreetingProvider &#123;</span><br><span class="line">    func provideGreetingData()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol GreetingOutput: class &#123;</span><br><span class="line">    func receiveGreetingData(greetingData: GreetingData)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class GreetingInteractor : GreetingProvider &#123;</span><br><span class="line">    weak var output: GreetingOutput!</span><br><span class="line">    </span><br><span class="line">    func provideGreetingData() &#123;</span><br><span class="line">        let person = Person(firstName: &quot;David&quot;, lastName: &quot;Blaine&quot;) // usually comes from data access layer</span><br><span class="line">        let subject = person.firstName + &quot; &quot; + person.lastName</span><br><span class="line">        let greeting = GreetingData(greeting: &quot;Hello&quot;, subject: subject)</span><br><span class="line">        self.output.receiveGreetingData(greeting)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol GreetingViewEventHandler &#123;</span><br><span class="line">    func didTapShowGreetingButton()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protocol GreetingView: class &#123;</span><br><span class="line">    func setGreeting(greeting: String)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class GreetingPresenter : GreetingOutput, GreetingViewEventHandler &#123;</span><br><span class="line">    weak var view: GreetingView!</span><br><span class="line">    var greetingProvider: GreetingProvider!</span><br><span class="line">    </span><br><span class="line">    func didTapShowGreetingButton() &#123;</span><br><span class="line">        self.greetingProvider.provideGreetingData()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func receiveGreetingData(greetingData: GreetingData) &#123;</span><br><span class="line">        let greeting = greetingData.greeting + &quot; &quot; + greetingData.subject</span><br><span class="line">        self.view.setGreeting(greeting)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class GreetingViewController : UIViewController, GreetingView &#123;</span><br><span class="line">    var eventHandler: GreetingViewEventHandler!</span><br><span class="line">    let showGreetingButton = UIButton()</span><br><span class="line">    let greetingLabel = UILabel()</span><br><span class="line">    </span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad()</span><br><span class="line">        self.showGreetingButton.addTarget(self, action: #selector(GreetingViewController.didTapButton(_:)), forControlEvents: .TouchUpInside)</span><br><span class="line">        </span><br><span class="line">        self.viewLayoutInitial()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func didTapButton(button: UIButton) &#123;</span><br><span class="line">        self.eventHandler.didTapShowGreetingButton()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func setGreeting(greeting: String) &#123;</span><br><span class="line">        self.greetingLabel.text = greeting</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // layout code goes here</span><br><span class="line">    func viewLayoutInitial() &#123;</span><br><span class="line">        self.view.frame = CGRect(x: 0, y: 0, width: 320, height: 480)</span><br><span class="line">        self.view.backgroundColor = UIColor(white: 1.0, alpha: 1.0);</span><br><span class="line">        </span><br><span class="line">        self.showGreetingButton.frame = CGRect(x: 10.0, y: 10.0, width: 90.0, height: 30.0)</span><br><span class="line">        self.showGreetingButton.layer.cornerRadius = 6.0</span><br><span class="line">        self.showGreetingButton.backgroundColor = UIColor.blueColor()</span><br><span class="line">        </span><br><span class="line">        self.greetingLabel.frame = CGRect(x: 10.0, y: 60.0, width: 200.0, height: 20.0)</span><br><span class="line">        self.greetingLabel.textColor = UIColor.blueColor()</span><br><span class="line">        self.greetingLabel.text = &quot;Say hello to who?&quot;</span><br><span class="line">        </span><br><span class="line">        self.view.addSubview(self.showGreetingButton);</span><br><span class="line">        self.view.addSubview(self.greetingLabel);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// Assembling of VIPER module, without Router</span><br><span class="line">let view = GreetingViewController()</span><br><span class="line">let presenter = GreetingPresenter()</span><br><span class="line">let interactor = GreetingInteractor()</span><br><span class="line">view.eventHandler = presenter</span><br><span class="line">presenter.view = view</span><br><span class="line">presenter.greetingProvider = interactor</span><br><span class="line">interactor.output = presenter</span><br><span class="line"></span><br><span class="line">XCPlaygroundPage.currentPage.liveView = view.view</span><br></pre></td></tr></table></figure>
+<p>再次，我们通过三个维度对 VIPER 架构进行分析：</p>
+<ul>
+<li>耦合度 —— 毫无疑问，VIPER 各模块间的耦合度是最低的。</li>
+<li>可测试性 —— 同样的，越低的耦合度，越高的可测试性。</li>
+<li>易用性 —— 尽管功能简单，开发者还是必须额外编写非常多的接口类，开发时间和维护成本很高。</li>
+</ul>
+<h3 id="什么是-LEGO-？"><a href="#什么是-LEGO-？" class="headerlink" title="什么是 LEGO ？"></a>什么是 LEGO ？</h3><p>在使用 VIPER 时，你可能会觉得自己在用 LEGO 方块拼凑一个帝国大厦，这或许是一个「<a href="https://inessential.com/2014/03/16/smaller_please" target="_blank" rel="noopener">存在问题</a>」的信号。对于大部分开发者来说，VIPER 显得过于复杂以至于大家很容易就会放弃 VIPER 而寻找更简单的架构。对于一些人来说，他们可能会继续坚持使用 VIPER 架构，尽管这看起来像是在用大炮打麻雀『译者注：原文为「shooting out of cannon into sparrows」』。我觉得他们之所以愿意承受着非常高的维护代价而选择 VIPER，应该是他们觉得日后对他们的 app 会有很大的好处。如果你有相同的想法，不妨试试 <a href="https://github.com/rambler-ios/Generamba" target="_blank" rel="noopener">Generamba</a> —— 一个自动生成 VIPER 框架的插件。对于我个人来说，这就像使用一个带有全自动目标锁定系统的大炮，而不是一个简易便携的投石器『译者注：原文为「Although for me personally it feels like using an automated targeting system for cannon instead of simply thking a sling shot.」』</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>在分析了上述几种常用软件框架后，希望你可以为心中的疑问找到答案，但毫无疑问的说，软件世界里没有「尚方宝剑」『译者注：原味为「silver bullet」，典故可参考<a href="https://en.wikipedia.org/wiki/No_Silver_Bullet" target="_blank" rel="noopener">WIKI</a>』，选择哪种架构，很大程度上取决于你工程的具体情况。</p>
+<p>因此，在一个 app 中使用多种软件架构其实是很正常的。例如你的项目开始时使用的是 MVC ，后面你可能发现个别复杂的页面使用 MVC 架构实现时会变得难以维护，此时你可能会使用 MVVM 架构对该界面代码进行重构。但并不需要修改其他使用 MVC 架构的运行良好的页面代码。</p>
+<p><em>事情应该力求简单，不过不能过于简单 —— 爱因斯坦</em><br>『译者注：原文为「<a href="https://en.wikiquote.org/wiki/Albert_Einstein" target="_blank" rel="noopener">Everything Should Be Made as Simple as Possible, But Not Simpler —— Albert Einstein</a>」』</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/04/17/iOS-Architecture-Patterns/" data-id="cjg31vbr1000mwitp0aw0bx0b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS —— 使用 Container View 实现左右侧栏
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/23/Introductin-Protocol-Oriented-Programming-in-Swift-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Swift 2之协议式编程介绍「译」</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IOS技术/">IOS技术</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS技术/">iOS技术</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客搭建/">博客搭建</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/技术文档翻译/">技术文档翻译</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/IOS开发/">IOS开发</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS开发/">iOS开发</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/IOS开发/" style="font-size: 10px;">IOS开发</a> <a href="/tags/Swift/" style="font-size: 20px;">Swift</a> <a href="/tags/iOS开发/" style="font-size: 20px;">iOS开发</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/04/17/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2018/04/13/vue+koa2+mySQL+Ngnix框架搭建备忘/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/06/iOS — Slider with Container View/">iOS —— 使用 Container View 实现左右侧栏</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/06/iOS — 使用 Container View 实现左右侧栏/">iOS —— 使用 Container View 实现左右侧栏</a>
+          </li>
+        
+          <li>
+            <a href="/2016/04/17/iOS-Architecture-Patterns/">iOS 软件架构 - MVC, MVP, MVVM 和 VIPER 「译」</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
